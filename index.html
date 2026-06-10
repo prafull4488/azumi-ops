@@ -438,6 +438,16 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
 </head>
 <body>
 
+<!-- Insert your Supabase config here if hosting on GitHub Pages -->
+<!-- Replace with your project's URL and ANON public key -->
+<!-- Example:
+     <script>
+       window.SUPABASE_URL = 'https://xyz.supabase.co'
+       window.SUPABASE_ANON_KEY = 'public-anon-key'
+     </script>
+-->
+
+
 <!-- SIDEBAR OVERLAY -->
 <div id="sidebarOverlay" onclick="closeSidebar()"></div>
 
@@ -696,6 +706,59 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
 <div id="toast"></div>
 
 <script>
+// --- Supabase client (optional) ---
+// If you host the frontend on GitHub Pages, add your Supabase details
+// into the page as `window.SUPABASE_URL` and `window.SUPABASE_ANON_KEY`.
+// The code below will attempt a direct sync with Supabase if provided.
+let supabase = null;
+async function initSupabase() {
+  try {
+    if(!window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) return false;
+    // load supabase client dynamically
+    if(!window.supabaseJsLoaded) {
+      await new Promise((res, rej)=>{
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js';
+        s.onload = ()=>{ window.supabaseJsLoaded = true; res(); };
+        s.onerror = rej; document.head.appendChild(s);
+      });
+    }
+    supabase = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+    return true;
+  } catch(e) { console.warn('Supabase init failed', e); return false; }
+}
+
+async function supabaseGetState() {
+  if(!supabase) return null;
+  try {
+    const { data, error } = await supabase.from('kv').select('value').eq('key','state').limit(1).single();
+    if(error) throw error;
+    return data ? data.value : null;
+  } catch(e) { console.warn(e); return null; }
+}
+
+async function supabaseSetState(obj) {
+  if(!supabase) throw new Error('no supabase');
+  // upsert into kv
+  const { error } = await supabase.from('kv').upsert([{ key: 'state', value: obj }], { onConflict: 'key' });
+  if(error) throw error;
+}
+
+async function syncFromSupabase() {
+  const ok = await initSupabase();
+  if(!ok) return false;
+  const data = await supabaseGetState();
+  if(data) {
+    S = data;
+    localStorage.setItem(KEY, JSON.stringify(S));
+    try { renderDashboard(); renderClients(); renderLinks(); renderMoodboard(); } catch(e){}
+    document.getElementById('syncBadge').textContent = 'Supabase';
+    toast('Synced from Supabase');
+    return true;
+  }
+  return false;
+}
+
 // ══════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════
@@ -718,7 +781,31 @@ function load() {
 }
 
 function save() {
+  // persist locally first for offline
   localStorage.setItem(KEY, JSON.stringify(S));
+  // try to persist to server (best-effort)
+  fetch('/api/data', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)})
+    .then(r=>{
+      if(r && r.ok) document.getElementById('syncBadge').textContent = 'Server';
+      else document.getElementById('syncBadge').textContent = 'Local Storage';
+    }).catch(()=>{ document.getElementById('syncBadge').textContent = 'Local Storage'; });
+}
+
+function syncFromServer() {
+  fetch('/api/data').then(r=>{
+    if(!r.ok) throw new Error('no server');
+    return r.json();
+  }).then(data=>{
+    if(!data) return;
+    S = data;
+    localStorage.setItem(KEY, JSON.stringify(S));
+    // re-render views with server data
+    try { renderDashboard(); renderClients(); renderLinks(); renderMoodboard(); } catch(e){}
+    document.getElementById('syncBadge').textContent = 'Server';
+    toast('Synced from server');
+  }).catch(()=>{
+    document.getElementById('syncBadge').textContent = 'Local Storage';
+  });
 }
 
 // ══════════════════════════════════════════════
@@ -1823,6 +1910,12 @@ renderDashboard();
 renderClients();
 renderLinks();
 renderMoodboard();
+// attempt to sync from server (if running)
+// Try Supabase first (if configured), else fallback to server
+(async()=>{
+  const used = await syncFromSupabase().catch(()=>false);
+  if(!used) syncFromServer();
+})();
 </script>
 </body>
 </html>
