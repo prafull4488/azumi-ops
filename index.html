@@ -440,11 +440,10 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
 
 <!-- Insert your Supabase config here if hosting on GitHub Pages -->
 <!-- Replace with your project's URL and ANON public key -->
-<!-- Example:
-     <script>
-       window.SUPABASE_URL = 'https://xyz.supabase.co'
-       window.SUPABASE_ANON_KEY = 'public-anon-key'
-     </script>
+<script>
+	window.SUPABASE_URL = 'https://exihunuwtxxvykspvqml.supabase.co';
+	window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4aWh1bnV3dHh4dnlrc3B2cW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExMDQxMTcsImV4cCI6MjA5NjY4MDExN30.iIBjhITOqZwOtQf4vIQyPp8K-r2pjvL5dUxUSUJ1tqU';
+</script>
 -->
 
 
@@ -1067,12 +1066,88 @@ function saveMoodItem() {
       S.moodItems.push({id:'m'+Date.now(), label, src:e.target.result, project});
       save(); closeModal('moodModal'); renderMoodboard(); toast('Added to board');
     };
-    reader.readAsDataURL(file);
-  } else {
+    // after loading a full state from kv, offer migration to normalized tables
+    try { checkAndOfferMigration(S); } catch(e) { console.warn(e); }
     S.moodItems.push({id:'m'+Date.now(), label, src:url, project});
     save(); closeModal('moodModal'); renderMoodboard(); toast('Added to board');
   }
   document.getElementById('mm-label').value='';
+
+async function checkAndOfferMigration(state) {
+  if(!supabase) return;
+  if(!state) return;
+  // only offer if there is data and normalized tables look empty
+  const needs = ['projects','clients','moodItems','links'];
+  const hasData = needs.some(k=>Array.isArray(state[k]) && state[k].length>0);
+  if(!hasData) return;
+  // check counts
+  const checks = await Promise.all([['projects'],['clients'],['mood_items'],['links']].map(async t=>{
+    try {
+      const head = await supabase.from(t[0]).select('id', { head: true, count: 'exact' });
+      return head && head.count ? head.count : 0;
+    } catch(e){ return 0; }
+  }));
+  const allEmpty = checks.every(c=>c===0);
+  if(!allEmpty) return; // don't auto-migrate into non-empty tables
+  if(confirm('Supabase: detected legacy `kv` state. Migrate your saved data into normalized tables (projects, clients, mood_items, links)?')) {
+    await migrateStateToNormalized(state);
+  }
+}
+
+async function migrateStateToNormalized(state) {
+  if(!supabase) { toast('Supabase not initialised'); return; }
+  toast('Migrating data to normalized tables — this may take a moment');
+  try {
+    // projects
+    if(Array.isArray(state.projects) && state.projects.length) {
+      const rows = state.projects.map(p=>({
+        id: p.id || ('p'+Date.now()+Math.floor(Math.random()*1000)),
+        name: p.name||null, client: p.client||null, location: p.location||null,
+        status: p.status||null, start_date: p.start||null, end_date: p.end||null,
+        budget: p.budget||null, progress: p.progress||0, notes: p.notes||null, created_at: p.created?new Date(p.created).toISOString():new Date().toISOString()
+      }));
+      await supabase.from('projects').upsert(rows);
+    }
+    // clients
+    if(Array.isArray(state.clients) && state.clients.length) {
+      const rows = state.clients.map(c=>({ id:c.id||('c'+Date.now()+Math.floor(Math.random()*1000)), name:c.name||null, phone:c.phone||null, email:c.email||null, property:c.property||null, type:c.type||null, budget:c.budget||null, notes:c.notes||null, created_at:c.created?new Date(c.created).toISOString():new Date().toISOString() }));
+      await supabase.from('clients').upsert(rows);
+    }
+    // mood items
+    if(Array.isArray(state.moodItems) && state.moodItems.length) {
+      const rows = state.moodItems.map(m=>({ id:m.id||('m'+Date.now()+Math.floor(Math.random()*1000)), label:m.label||null, src:m.src||null, project_id:m.project||m.project_id||null, created_at:new Date().toISOString() }));
+      await supabase.from('mood_items').upsert(rows);
+    }
+    // links and link categories
+    if(Array.isArray(state.links) && state.links.length) {
+      const cats = new Set(state.linkCats||[]);
+      // upsert categories
+      if(cats.size) {
+        const catRows = Array.from(cats).map(n=>({ name: n }));
+        await supabase.from('link_cats').upsert(catRows);
+      }
+      const rows = state.links.map(l=>({ id:l.id||('l'+Date.now()+Math.floor(Math.random()*1000)), label:l.label||null, url:l.url||null, cat:l.cat||null, created_at:new Date().toISOString() }));
+      await supabase.from('links').upsert(rows);
+    }
+    // kit data: S.kitData is an object keyed by docKey
+    if(state.kitData && typeof state.kitData === 'object') {
+      const keys = Object.keys(state.kitData||{});
+      const rows = keys.map(k=>{
+        const docIdxMatch = k.match(/^doc(\d+)_/);
+        const doc_idx = docIdxMatch ? parseInt(docIdxMatch[1],10) : null;
+        const project_tag = k.split('_').slice(1).join('_') || null;
+        return { key: k, project_tag, doc_idx, data: state.kitData[k], updated_at: new Date().toISOString() };
+      });
+      if(rows.length) await supabase.from('kit_data').upsert(rows);
+    }
+    // also insert full state into kv for backward compat
+    await supabase.from('kv').upsert([{ key: 'state', value: state }]);
+    toast('Migration completed');
+    document.getElementById('syncBadge').textContent = 'Supabase';
+  } catch(e) {
+    console.error('migration error', e); toast('Migration failed — check console');
+  }
+}
   document.getElementById('mm-url').value='';
   document.getElementById('mm-file').value='';
 }

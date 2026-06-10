@@ -92,3 +92,75 @@ create policy "anon_write_kv" on kv for insert, update using (true) with check (
 5. Deploy the repo to GitHub Pages (branch `gh-pages` or `main` depending on your Pages settings). The frontend will directly sync with Supabase when loaded.
 
 Security note: enabling wide-open anon policies is convenient for quick testing but insecure for production. For production, use Row-Level Security (RLS) with authenticated users, or proxy changes through a server (the `server.js` in this repo can be used with `DATABASE_URL`).
+
+---
+
+Publishing on GitHub Pages — step-by-step
+---------------------------------------
+
+Follow these steps to publish the app on GitHub Pages and connect it to Supabase for hosted storage.
+
+1) Prepare Supabase
+- Open your Supabase project → **SQL editor** → run the SQL in `supabase-init.sql` (file: [supabase-init.sql](supabase-init.sql)) to create tables and example RLS policies.
+- Quick test in SQL editor:
+
+```sql
+select count(*) from projects;
+```
+
+2) Add Supabase client keys to the frontend
+- Edit `index.html` near the top and add the following (replace placeholders):
+
+```html
+<script>
+	window.SUPABASE_URL = 'https://<your-project>.supabase.co';
+	window.SUPABASE_ANON_KEY = '<your-public-anon-key>';
+</script>
+```
+
+3) Import an existing backup (optional)
+- If you have an exported JSON backup, you can import it directly into `kv` in Supabase SQL editor using dollar-quoting. Replace <PASTE_JSON> with the full exported JSON:
+
+```sql
+INSERT INTO kv(key, value)
+VALUES ('state', $$<PASTE_JSON>$$)
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+```
+
+4) Commit & push to GitHub
+- From your repo root:
+
+```bash
+git add .
+git commit -m "Prepare for GitHub Pages + Supabase config"
+git push origin main
+```
+
+5) Enable GitHub Pages
+- In your repo: Settings → Pages. Select branch `main` (or `gh-pages`) and folder `/ (root)`, then Save. Wait a few minutes for the Pages URL to become active.
+
+6) Verify and migrate
+- Open the Pages URL. The site will try Supabase first and, if `kv` contains legacy state, prompt to migrate into normalized tables — confirm to run migration.
+- After migration, inspect Supabase Studio → `projects`, `clients`, `mood_items`, `links`, `kit_data`.
+
+7) Local preview (optional)
+- Quick static preview (no npm required):
+
+```bash
+# serve current directory
+python -m http.server 8000
+# open http://localhost:8000/index.html
+```
+
+8) Security & housekeeping
+- The `supabase-init.sql` includes permissive RLS policies for quick testing. Tighten RLS and remove permissive anon policies before production.
+- Do not commit private keys to the repo; remove the anon key from `index.html` after verifying, or load keys via a build step.
+
+Quick checklist
+- [ ] Run `supabase-init.sql` in Supabase
+- [ ] Optionally insert backup JSON into `kv`
+- [ ] Add `SUPABASE_URL` + `SUPABASE_ANON_KEY` to `index.html`
+- [ ] Commit & push, enable GitHub Pages
+- [ ] Open Pages URL and confirm migration prompt (if `kv` had data)
+
+If you want, I can add a one-click "Migrate now" admin button or update `save()` to write directly to Supabase. Tell me which and I'll implement it.
