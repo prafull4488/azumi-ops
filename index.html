@@ -528,11 +528,11 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
       <div>
         <div class="card">
           <div class="card-header"><div class="card-title">Client Details</div></div>
-          <div class="field"><label>Client Name(s)</label><input type="text" id="cl-name" placeholder="e.g. Mr. & Mrs. Mehta"/></div>
-          <div class="field"><label>Contact Number</label><input type="text" id="cl-phone" placeholder="WhatsApp number"/></div>
-          <div class="field"><label>Email</label><input type="text" id="cl-email" placeholder="email address"/></div>
-          <div class="field"><label>Property</label><input type="text" id="cl-property" placeholder="e.g. 3BHK Villa, Goa"/></div>
-          <div class="field"><label>Project Type</label>
+          <div class="field"><label for="cl-name">Client Name(s)</label><input type="text" id="cl-name" placeholder="e.g. Mr. & Mrs. Mehta"/></div>
+          <div class="field"><label for="cl-phone">Contact Number</label><input type="text" id="cl-phone" placeholder="WhatsApp number"/></div>
+          <div class="field"><label for="cl-email">Email</label><input type="text" id="cl-email" placeholder="email address"/></div>
+          <div class="field"><label for="cl-property">Property</label><input type="text" id="cl-property" placeholder="e.g. 3BHK Villa, Goa"/></div>
+          <div class="field"><label for="cl-type">Project Type</label>
             <select id="cl-type">
               <option>Goa Villa / Holiday Home</option>
               <option>Pune Apartment</option>
@@ -541,8 +541,8 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
               <option>Other</option>
             </select>
           </div>
-          <div class="field"><label>Budget Range</label><input type="text" id="cl-budget" placeholder="e.g. ₹20L – ₹30L"/></div>
-          <div class="field"><label>Notes</label><textarea id="cl-notes" placeholder="Style direction, references, key observations..."></textarea></div>
+          <div class="field"><label for="cl-budget">Budget Range</label><input type="text" id="cl-budget" placeholder="e.g. ₹20L – ₹30L"/></div>
+          <div class="field"><label for="cl-notes">Notes</label><textarea id="cl-notes" placeholder="Style direction, references, key observations..."></textarea></div>
           <div class="btn-row">
             <button class="btn btn-solid" onclick="saveClient()">Save Client</button>
             <button class="btn" onclick="clearClientForm()">Clear</button>
@@ -613,10 +613,10 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
       <div>
         <div class="card">
           <div class="card-header"><div class="card-title">Customise Survey Link</div></div>
-          <div class="field"><label>Studio Name (shown to client)</label><input type="text" id="sv-studio" value="Azumi Designs"/></div>
-          <div class="field"><label>Designer Name</label><input type="text" id="sv-designer" value="Sindhu Kodihal"/></div>
-          <div class="field"><label>Contact Email</label><input type="text" id="sv-email" value="hello@azumidesigns.co.in"/></div>
-          <div class="field"><label>Intro Message to Client</label><textarea id="sv-intro">Thank you for reaching out. Please fill in the form below — your answers help us design with intention, not assumption. Take your time.</textarea></div>
+          <div class="field"><label for="sv-studio">Studio Name (shown to client)</label><input type="text" id="sv-studio" value="Azumi Designs"/></div>
+          <div class="field"><label for="sv-designer">Designer Name</label><input type="text" id="sv-designer" value="Sindhu Kodihal"/></div>
+          <div class="field"><label for="sv-email">Contact Email</label><input type="text" id="sv-email" value="hello@azumidesigns.co.in"/></div>
+          <div class="field"><label for="sv-intro">Intro Message to Client</label><textarea id="sv-intro">Thank you for reaching out. Please fill in the form below — your answers help us design with intention, not assumption. Take your time.</textarea></div>
           <div class="btn-row">
             <button class="btn btn-solid" onclick="generateSurveyLink()">Generate Survey Page</button>
           </div>
@@ -646,17 +646,17 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
   <div class="modal">
     <button class="modal-close" onclick="closeModal('projectModal')">✕</button>
     <div class="modal-title">Add Project</div>
-    <div class="field"><label>Project Name</label><input type="text" id="pm-name" placeholder="e.g. Sharma Villa · Goa"/></div>
-    <div class="field"><label>Client</label><input type="text" id="pm-client" placeholder="Client name"/></div>
-    <div class="field"><label>Location</label><input type="text" id="pm-location" placeholder="e.g. Candolim, Goa"/></div>
-    <div class="field"><label>Status</label>
+    <div class="field"><label for="pm-name">Project Name</label><input type="text" id="pm-name" placeholder="e.g. Sharma Villa · Goa"/></div>
+    <div class="field"><label for="pm-client">Client</label><input type="text" id="pm-client" placeholder="Client name"/></div>
+    <div class="field"><label for="pm-location">Location</label><input type="text" id="pm-location" placeholder="e.g. Candolim, Goa"/></div>
+    <div class="field"><label for="pm-status">Status</label>
       <select id="pm-status"><option value="active">Active</option><option value="hold">On Hold</option><option value="done">Completed</option></select>
     </div>
-    <div class="field"><label>Start Date</label><input type="date" id="pm-start"/></div>
-    <div class="field"><label>Target Completion</label><input type="date" id="pm-end"/></div>
-    <div class="field"><label>Budget</label><input type="text" id="pm-budget" placeholder="₹"/></div>
-    <div class="field"><label>Progress (%)</label><input type="number" id="pm-progress" min="0" max="100" value="0"/></div>
-    <div class="field"><label>Notes</label><textarea id="pm-notes" placeholder="Key notes, scope, deliverables..."></textarea></div>
+    <div class="field"><label for="pm-start">Start Date</label><input type="date" id="pm-start"/></div>
+    <div class="field"><label for="pm-end">Target Completion</label><input type="date" id="pm-end"/></div>
+    <div class="field"><label for="pm-budget">Budget</label><input type="text" id="pm-budget" placeholder="₹"/></div>
+    <div class="field"><label for="pm-progress">Progress (%)</label><input type="number" id="pm-progress" min="0" max="100" value="0"/></div>
+    <div class="field"><label for="pm-notes">Notes</label><textarea id="pm-notes" placeholder="Key notes, scope, deliverables..."></textarea></div>
     <div class="btn-row"><button class="btn btn-solid" onclick="saveProject()">Save Project</button></div>
   </div>
 </div>
@@ -672,11 +672,11 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
   <div class="modal">
     <button class="modal-close" onclick="closeModal('moodModal')">✕</button>
     <div class="modal-title">Add to Mood Board</div>
-    <div class="field"><label>Label / Description</label><input type="text" id="mm-label" placeholder="e.g. Master bedroom palette"/></div>
-    <div class="field"><label>Image URL</label><input type="text" id="mm-url" placeholder="https://... or paste a Pinterest image link"/></div>
+    <div class="field"><label for="mm-label">Label / Description</label><input type="text" id="mm-label" placeholder="e.g. Master bedroom palette"/></div>
+    <div class="field"><label for="mm-url">Image URL</label><input type="text" id="mm-url" placeholder="https://... or paste a Pinterest image link"/></div>
     <div style="text-align:center;font-size:.62rem;color:var(--ink3);margin:.5rem 0">— or —</div>
-    <div class="field"><label>Upload Image</label><input type="file" id="mm-file" accept="image/*"/></div>
-    <div class="field"><label>Project</label><select id="mm-project"></select></div>
+    <div class="field"><label for="mm-file">Upload Image</label><input type="file" id="mm-file" accept="image/*"/></div>
+    <div class="field"><label for="mm-project">Project</label><select id="mm-project"></select></div>
     <div class="btn-row"><button class="btn btn-solid" onclick="saveMoodItem()">Add to Board</button></div>
   </div>
 </div>
@@ -685,9 +685,9 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
   <div class="modal">
     <button class="modal-close" onclick="closeModal('linkModal')">✕</button>
     <div class="modal-title">Add Resource Link</div>
-    <div class="field"><label>Label / Name</label><input type="text" id="lm-label" placeholder="e.g. RAK Ceramics Goa Showroom"/></div>
-    <div class="field"><label>URL</label><input type="text" id="lm-url" placeholder="https://..."/></div>
-    <div class="field"><label>Category</label><select id="lm-cat"></select></div>
+    <div class="field"><label for="lm-label">Label / Name</label><input type="text" id="lm-label" placeholder="e.g. RAK Ceramics Goa Showroom"/></div>
+    <div class="field"><label for="lm-url">URL</label><input type="text" id="lm-url" placeholder="https://..."/></div>
+    <div class="field"><label for="lm-cat">Category</label><select id="lm-cat"></select></div>
     <div class="btn-row"><button class="btn btn-solid" onclick="saveLink()">Save Link</button></div>
   </div>
 </div>
@@ -696,7 +696,7 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
   <div class="modal">
     <button class="modal-close" onclick="closeModal('catModal')">✕</button>
     <div class="modal-title">New Category</div>
-    <div class="field"><label>Category Name</label><input type="text" id="cm-name" placeholder="e.g. Hardware & Handles"/></div>
+    <div class="field"><label for="cm-name">Category Name</label><input type="text" id="cm-name" placeholder="e.g. Hardware & Handles"/></div>
     <div class="btn-row"><button class="btn btn-solid" onclick="saveCategory()">Create Category</button></div>
   </div>
 </div>
