@@ -711,7 +711,7 @@ label{display:block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercas
     <div class="modal-title">Settings — Supabase</div>
     <div class="field"><label for="set-url">Supabase URL</label><input type="text" id="set-url" placeholder="https://xyzcompany.supabase.co"/></div>
     <div class="field"><label for="set-key">Anon/Public API Key</label><input type="text" id="set-key" placeholder="public-anon-key"/></div>
-    <div style="font-size:.68rem;color:var(--ink3);margin:.4rem 0">Keys are stored in your browser only (localStorage).</div>
+    <div style="font-size:.68rem;color:var(--ink3);margin:.4rem 0">Keys are stored in your browser only (localStorage). If your Supabase project uses IPv6-only direct connections, enable the IPv4 add-on to allow browser access from IPv4-only networks.</div>
     <div class="btn-row">
       <button class="btn btn-solid" onclick="saveSettings()">Save</button>
       <button class="btn" onclick="manualSync();">Test Sync</button>
@@ -909,10 +909,29 @@ async function manualSync() {
       return;
     }
   } catch(e) { console.warn('Supabase sync failed',e); }
-  // fallback to server
-  fetch('/api/data', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)})
-    .then(r=>{ if(r.ok) { document.getElementById('syncBadge').textContent='Server'; toast('Synced to server'); } else { document.getElementById('syncBadge').textContent='Local Storage'; toast('Sync failed'); } })
-    .catch(()=>{ document.getElementById('syncBadge').textContent='Local Storage'; toast('Sync failed'); });
+  // if hosted on GitHub Pages (static), do not attempt server fallback
+  try {
+    const host = window.location.hostname || '';
+    if(host.includes('github.io')) { toast('Supabase not available; running in Local Storage mode'); document.getElementById('syncBadge').textContent='Local Storage'; return; }
+  } catch(_) {}
+
+  // fallback to server for non-static hosts
+  try {
+    const r = await fetch('/api/data', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)});
+    if(r.ok) { document.getElementById('syncBadge').textContent='Server'; toast('Synced to server'); }
+    else { document.getElementById('syncBadge').textContent='Local Storage'; toast('Sync failed'); }
+  } catch(err) {
+    console.error('manualSync server fallback failed', err);
+    // Common network error hint
+    const msg = (err && err.message) ? err.message : String(err);
+    if(msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('ERR_CONNECTION_CLOSED')) {
+      toast('Network error — cannot reach Supabase. Check project IPv4 settings (enable IPv4 add-on)');
+      console.warn('If your Supabase project is IPv6-only, enable the IPv4 add-on in Project → Settings → Database → Connection.');
+    } else {
+      toast('Sync failed');
+    }
+    document.getElementById('syncBadge').textContent='Local Storage';
+  }
 }
 
 // load saved Supabase keys on startup

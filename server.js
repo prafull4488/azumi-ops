@@ -1,3 +1,62 @@
+const express = require('express');
+const cors = require('cors');
+const { Pool } = require('pg');
+require('dotenv').config();
+
+const app = express();
+app.use(cors());
+app.use(express.json({ limit: '2mb' }));
+
+const PORT = process.env.PORT || 3000;
+
+let pool = null;
+if(process.env.DATABASE_URL) {
+  pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+  console.log('Using DATABASE_URL for Postgres');
+} else {
+  console.warn('No DATABASE_URL found — server will run but persistence will be disabled');
+}
+
+async function getState() {
+  if(!pool) return null;
+  const res = await pool.query('SELECT value FROM kv WHERE key=$1 LIMIT 1', ['state']);
+  if(res.rows.length===0) return null;
+  return res.rows[0].value;
+}
+
+async function setState(obj) {
+  if(!pool) throw new Error('no database');
+  // upsert into kv (assumes table kv(key text primary key, value jsonb))
+  await pool.query(
+    'INSERT INTO kv(key,value) VALUES($1,$2) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value',
+    ['state', obj]
+  );
+}
+
+app.get('/api/ping', (req, res) => res.json({ ok: true }));
+
+app.get('/api/data', async (req, res) => {
+  try {
+    const s = await getState();
+    if(!s) return res.status(204).json(null);
+    res.json(s);
+  } catch(err) {
+    console.error(err); res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/data', async (req, res) => {
+  try {
+    if(!pool) return res.status(503).json({ error: 'no database configured' });
+    const obj = req.body;
+    await setState(obj);
+    res.json({ ok: true });
+  } catch(err) {
+    console.error(err); res.status(500).json({ error: err.message });
+  }
+});
+
+app.listen(PORT, ()=>console.log('Server listening on', PORT));
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
