@@ -734,15 +734,19 @@ async function initSupabase() {
     if(!window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) return false;
     // load supabase client script (UMD) if not already attempted
     if(!window.supabaseJsLoaded) {
-      await new Promise((res, rej)=>{
-        const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js';
-        s.onload = ()=>{ window.supabaseJsLoaded = true; res(); };
-        s.onerror = (err)=>{ window.supabaseJsLoaded = false; rej(err); };
-        document.head.appendChild(s);
-      }).catch(()=>{
-        // ignore; we'll try ESM dynamic import below
-      });
+      // if a global was already injected by a different script, treat as loaded
+      if(window.supabase) { window.supabaseJsLoaded = true; }
+      if(!window.supabaseJsLoaded) {
+        await new Promise((res, rej)=>{
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js';
+          s.onload = ()=>{ window.supabaseJsLoaded = true; res(); };
+          s.onerror = (err)=>{ window.supabaseJsLoaded = false; rej(err); };
+          document.head.appendChild(s);
+        }).catch(()=>{
+          // ignore; we'll try ESM dynamic import below
+        });
+      }
     }
 
     // Try to locate a factory that exposes createClient
@@ -774,7 +778,7 @@ async function initSupabase() {
 async function supabaseGetState() {
   if(!supabase) return null;
   try {
-    const { data, error } = await supabase.from('kv').select('value').eq('key','state').limit(1).single();
+    const { data, error } = await supabase.from('kv').select('value').eq('key','state').limit(1).maybeSingle();
     if(error) throw error;
     return data ? data.value : null;
   } catch(e) { console.warn(e); return null; }
@@ -828,12 +832,29 @@ function load() {
 function save() {
   // persist locally first for offline
   localStorage.setItem(KEY, JSON.stringify(S));
-  // try to persist to server (best-effort)
-  fetch('/api/data', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)})
-    .then(r=>{
+  // prefer Supabase if available (client or keys present)
+  (async ()=>{
+    try {
+      if(window.supabaseClient || supabase || (window.SUPABASE_URL && window.SUPABASE_ANON_KEY)) {
+        const ok = await initSupabase();
+        if(ok && supabase) {
+          await supabaseSetState(S);
+          document.getElementById('syncBadge').textContent = 'Supabase';
+          return;
+        }
+      }
+    } catch(e){ console.warn('Supabase save failed', e); }
+
+    // if hosted on GitHub Pages (static) avoid calling /api/data which doesn't exist
+    try {
+      const host = window.location.hostname || '';
+      if(host.includes('github.io')) { document.getElementById('syncBadge').textContent = 'Local Storage'; return; }
+      // try to persist to server (best-effort)
+      const r = await fetch('/api/data', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)});
       if(r && r.ok) document.getElementById('syncBadge').textContent = 'Server';
       else document.getElementById('syncBadge').textContent = 'Local Storage';
-    }).catch(()=>{ document.getElementById('syncBadge').textContent = 'Local Storage'; });
+    } catch(e){ document.getElementById('syncBadge').textContent = 'Local Storage'; }
+  })();
 }
 
 function syncFromServer() {
