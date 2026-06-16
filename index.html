@@ -1,557 +1,300 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Azumi Designs - Studio Hub</title>
-<style>
-  :root {
-    --bg: #f5f3ef;
-    --surface: #ffffff;
-    --text: #2b2826;
-    --muted: #7a7570;
-    --border: #e2ddd6;
-    --accent: #b5703e;
-    --accent-dark: #95592f;
-    --danger: #c0524a;
-    --success: #5a8a5e;
-    --radius: 10px;
-    --shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  [data-theme="dark"] {
-    --bg: #1b1815;
-    --surface: #262220;
-    --text: #f0ece6;
-    --muted: #a39c94;
-    --border: #3a352f;
-    --accent: #d99a64;
-    --accent-dark: #c98a52;
-    --danger: #e08077;
-    --success: #7fbf83;
-    --shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    transition: background 0.2s, color 0.2s;
-    -webkit-font-smoothing: antialiased;
-  }
-  .app { max-width: 900px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
-
-  /* ----- Header ----- */
-  header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 10;
-  }
-  header h1 { font-size: 1.15rem; margin: 0; font-weight: 700; letter-spacing: 0.3px; }
-  header h1 span { color: var(--accent); }
-  .header-actions { display: flex; align-items: center; gap: 8px; }
-  .icon-btn {
-    background: none; border: 1px solid var(--border); border-radius: 8px;
-    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 1.1rem; color: var(--text);
-  }
-  .icon-btn:active { transform: scale(0.96); }
-
-  /* ----- Tabs / Nav ----- */
-  nav.tabs {
-    display: flex; background: var(--surface); border-bottom: 1px solid var(--border);
-    position: sticky; top: 60px; z-index: 9; overflow-x: auto;
-  }
-  nav.tabs button {
-    flex: 1; min-width: 90px; padding: 12px 8px; background: none; border: none;
-    font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer;
-    border-bottom: 3px solid transparent; white-space: nowrap;
-  }
-  nav.tabs button.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-  main { flex: 1; padding: 16px; padding-bottom: 40px; }
-
-  /* ----- Cards / sections ----- */
-  .section-title { font-size: 1.05rem; font-weight: 700; margin: 0 0 12px; }
-  .card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 14px; margin-bottom: 14px; box-shadow: var(--shadow);
-  }
-
-  /* ----- Forms ----- */
-  label { font-size: 0.8rem; color: var(--muted); display: block; margin: 8px 0 4px; font-weight: 600; }
-  input, select, textarea {
-    width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
-    background: var(--bg); color: var(--text); font-size: 0.95rem; font-family: inherit;
-  }
-  textarea { resize: vertical; min-height: 60px; }
-  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 10px 16px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
-    cursor: pointer; background: var(--accent); color: #fff; transition: background 0.15s;
-  }
-  .btn:hover { background: var(--accent-dark); }
-  .btn.secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-  .btn.danger { background: var(--danger); }
-  .btn.full { width: 100%; }
-  .btn-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-  .btn.small { padding: 6px 10px; font-size: 0.78rem; }
-
-  /* ----- Auth screen ----- */
-  .auth-wrap {
-    flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px;
-  }
-  .auth-card { width: 100%; max-width: 380px; }
-  .auth-card h2 { text-align: center; margin-top: 0; }
-  .auth-toggle { text-align: center; margin-top: 14px; font-size: 0.85rem; }
-  .auth-toggle a { color: var(--accent); cursor: pointer; font-weight: 700; text-decoration: none; }
-  .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 8px; min-height: 1em; }
-  .role-tag {
-    display: inline-block; font-size: 0.7rem; padding: 2px 8px; border-radius: 12px;
-    background: var(--accent); color: #fff; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  /* ----- List items ----- */
-  .item {
-    border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;
-    background: var(--bg);
-  }
-  .item-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-  .item-title { font-weight: 700; font-size: 0.95rem; }
-  .item-sub { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
-  .item-notes { font-size: 0.82rem; margin-top: 6px; white-space: pre-wrap; }
-  .badge {
-    font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 12px;
-    background: rgba(181,112,62,0.15); color: var(--accent); white-space: nowrap;
-  }
-  .badge.done { background: rgba(90,138,94,0.15); color: var(--success); }
-  .link-item a { color: var(--accent); font-weight: 700; word-break: break-all; text-decoration: none; }
-  .link-item a:hover { text-decoration: underline; }
-
-  .empty-msg { color: var(--muted); font-size: 0.88rem; text-align: center; padding: 20px 0; }
-  .hidden { display: none !important; }
-
-  /* Scope table - mobile-first stacked cards, becomes table on wider screens */
-  @media (min-width: 640px) {
-    .scope-grid { display: grid; grid-template-columns: 1fr 140px 130px 1fr auto; gap: 8px; align-items: start; }
-    .scope-grid > div { width: 100%; }
-  }
-
-  .toast {
-    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-    background: var(--surface); border: 1px solid var(--border); color: var(--text);
-    padding: 10px 18px; border-radius: 8px; box-shadow: var(--shadow); font-size: 0.85rem;
-    z-index: 100; opacity: 0; transition: opacity 0.25s;
-  }
-  .toast.show { opacity: 1; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Azumi Ops — Architectural Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{--bg:#fff;--fg:#111;--muted:#666;--accent:#0066ff}
+    [data-theme="dark"]{--bg:#0b0f14;--fg:#e6eef8;--muted:#9fb0d6;--accent:#4ea1ff}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:Inter,Segoe UI,system-ui,Arial}
+    .app{display:flex;flex-direction:column;min-height:100vh}
+    header{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-bottom:1px solid rgba(0,0,0,0.06)}
+    header .brand{display:flex;gap:.5rem;align-items:center}
+    header nav{display:flex;gap:.5rem}
+    button, input, textarea, select{font:inherit}
+    .tabs{display:flex;gap:.25rem}
+    .tabs button{background:transparent;border:0;padding:.5rem 0.75rem;border-radius:6px;color:var(--muted)}
+    .tabs button.active{background:var(--accent);color:#fff}
+    main{flex:1;padding:1rem;display:grid;grid-template-columns:1fr;gap:1rem}
+    @media(min-width:900px){main{grid-template-columns:320px 1fr}}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:1rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
+    .small{font-size:.9rem;color:var(--muted)}
+    .list{display:flex;flex-direction:column;gap:.5rem}
+    table{width:100%;border-collapse:collapse}
+    table th,table td{padding:.5rem;border-bottom:1px solid rgba(0,0,0,0.05)}
+    .controls{display:flex;gap:.5rem;flex-wrap:wrap}
+    footer{padding:.5rem 1rem;text-align:center;font-size:.85rem;color:var(--muted)}
+    .hidden{display:none}
+    .form-row{display:flex;gap:.5rem}
+    .form-row > *{flex:1}
+    .nav-right{display:flex;gap:.5rem;align-items:center}
+  </style>
 </head>
 <body>
-<div class="app" id="app">
-
-  <!-- ============ AUTH SCREEN ============ -->
-  <div class="auth-wrap" id="authScreen">
-    <div class="card auth-card">
-      <h2 id="authTitle">Welcome to Azumi Hub</h2>
-      <form id="authForm">
-        <label for="authUsername">Username</label>
-        <input type="text" id="authUsername" autocomplete="username" required>
-        <label for="authPassword">Password</label>
-        <input type="password" id="authPassword" autocomplete="current-password" required minlength="6">
-        <div class="btn-row">
-          <button type="submit" class="btn full" id="authSubmitBtn">Log In</button>
-        </div>
-        <div class="error-msg" id="authError"></div>
-      </form>
-      <div class="auth-toggle">
-        <span id="authToggleText">Don't have an account?</span>
-        <a id="authToggleLink">Sign up</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ MAIN APP ============ -->
-  <div id="mainScreen" class="hidden">
+  <div class="app" id="app" data-theme="light">
     <header>
-      <h1>Azumi<span>Hub</span></h1>
-      <div class="header-actions">
-        <span class="role-tag" id="userRole"></span>
-        <button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button>
-        <button class="icon-btn" id="logoutBtn" title="Log out">⎋</button>
+      <div class="brand">
+        <img src="https://raw.githubusercontent.com/prafull4488/azumi-ops/main/logo.png" alt="logo" style="width:36px;height:36px;border-radius:6px;object-fit:cover">
+        <div>
+          <div style="font-weight:600">Azumi Ops</div>
+          <div class="small">Architectural Dashboard</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <nav class="tabs" id="tabs">
+          <button data-tab="scope" class="active">Scope</button>
+          <button data-tab="clients">Clients</button>
+          <button data-tab="links">Links</button>
+          <button data-tab="vendors">Vendors</button>
+        </nav>
+        <div class="nav-right">
+          <button id="themeToggle" title="Toggle dark mode">🌙</button>
+          <button id="exportPdf">Export PDF</button>
+          <button id="downloadJson">Download JSON</button>
+          <button id="saveRepo">Save to Repo</button>
+          <button id="loginBtn">Login</button>
+        </div>
       </div>
     </header>
 
-    <nav class="tabs">
-      <button class="tab-btn active" data-tab="scope">📋 Scope</button>
-      <button class="tab-btn" data-tab="clients">👥 Clients</button>
-      <button class="tab-btn" data-tab="links">🔗 Links</button>
-    </nav>
-
     <main>
-      <!-- ========== SCOPE SHEET ========== -->
-      <section id="tab-scope">
-        <div class="section-title">Project Scope Sheet</div>
-        <div class="card">
-          <div class="scope-grid">
-            <div><label>Item</label><input id="scopeItem" placeholder="e.g. Living room flooring"></div>
-            <div><label>Category</label><input id="scopeCategory" placeholder="e.g. Civil"></div>
-            <div><label>Status</label>
-              <select id="scopeStatus">
-                <option>Pending</option>
-                <option>In Progress</option>
-                <option>Done</option>
-                <option>Blocked</option>
-              </select>
-            </div>
-            <div><label>Notes</label><input id="scopeNotes" placeholder="Optional notes"></div>
-            <div style="display:flex; align-items:flex-end;">
-              <button class="btn full" id="addScopeBtn" style="margin-top:8px;">Add</button>
-            </div>
-          </div>
+      <aside class="card">
+        <h3>Quick Actions</h3>
+        <div class="small">Logged in as <span id="currentUser">guest</span></div>
+        <div style="margin-top:.75rem" class="controls">
+          <button id="newScope">New Scope Item</button>
+          <button id="newClient">New Client</button>
+          <button id="newLink">New Link</button>
         </div>
-        <div id="scopeList"></div>
-      </section>
+        <hr>
+        <h4>Important Links</h4>
+        <div id="sideLinks" class="list small"></div>
+      </aside>
 
-      <!-- ========== CLIENTS ========== -->
-      <section id="tab-clients" class="hidden">
-        <div class="section-title">Client Details</div>
-        <div class="card">
-          <label>Client Name</label>
-          <input id="clientName" placeholder="e.g. Mr. & Mrs. Sharma">
-          <label>Contact (phone / email)</label>
-          <input id="clientContact" placeholder="e.g. +91 98765 43210">
-          <label>Project</label>
-          <input id="clientProject" placeholder="e.g. 3BHK Villa, Candolim">
-          <label>Notes</label>
-          <textarea id="clientNotes" placeholder="Brief, preferences, budget, etc."></textarea>
-          <div class="btn-row">
-            <button class="btn full" id="addClientBtn">Add Client</button>
-          </div>
+      <section>
+        <div id="scopeView" class="card">
+          <h2>Scope Sheet</h2>
+          <div class="small">Editable project scope items</div>
+          <table id="scopeTable"><thead><tr><th>Title</th><th>Details</th><th>Owner</th><th></th></tr></thead><tbody></tbody></table>
         </div>
-        <div id="clientsList"></div>
-      </section>
 
-      <!-- ========== LINKS ========== -->
-      <section id="tab-links" class="hidden">
-        <div class="section-title">Important Links</div>
-        <div class="card">
-          <label>Title</label>
-          <input id="linkTitle" placeholder="e.g. Moodboard - Project 01">
-          <label>URL</label>
-          <input id="linkUrl" placeholder="https://...">
-          <label>Notes</label>
-          <input id="linkNotes" placeholder="Optional description">
-          <div class="btn-row">
-            <button class="btn full" id="addLinkBtn">Add Link</button>
-          </div>
+        <div id="clientsView" class="card hidden">
+          <h2>Client Details</h2>
+          <form id="clientForm">
+            <div class="form-row"><input name="name" placeholder="Client name" required><input name="contact" placeholder="Contact (phone/email)"></div>
+            <div class="form-row"><input name="project" placeholder="Project name"><input name="notes" placeholder="Notes"></div>
+            <div style="margin-top:.5rem" class="controls"><button>Save</button><button type="button" id="clearClient">Clear</button></div>
+          </form>
+          <h3 style="margin-top:1rem">Saved Clients</h3>
+          <div id="clientsList" class="list"></div>
         </div>
-        <div id="linksList"></div>
+
+        <div id="linksView" class="card hidden">
+          <h2>Important Links</h2>
+          <form id="linkForm" style="display:flex;gap:.5rem;flex-wrap:wrap"><input name="title" placeholder="Title"><input name="url" placeholder="https://..."><button>Add</button></form>
+          <div id="linksList" class="list" style="margin-top:.5rem"></div>
+        </div>
+
+        <div id="vendorsView" class="card hidden">
+          <h2>Vendors</h2>
+          <div class="small">Simple vendor list</div>
+          <form id="vendorForm" style="display:flex;gap:.5rem;flex-wrap:wrap"><input name="name" placeholder="Vendor name"><input name="contact" placeholder="Contact"><button>Add</button></form>
+          <div id="vendorsList" class="list" style="margin-top:.5rem"></div>
+        </div>
       </section>
     </main>
+
+    <footer class="small">Mobile-first responsive single-page app • Data stored in local JSON and can be downloaded or pushed to GitHub repo.</footer>
   </div>
 
-  <div class="toast" id="toast"></div>
-</div>
+  <!-- Login / Signup modal -->
+  <div id="authModal" class="hidden" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.4)">
+    <div style="width:92%;max-width:420px;background:var(--bg);padding:1rem;border-radius:8px">
+      <h3 id="authTitle">Login</h3>
+      <form id="authForm">
+        <input name="username" placeholder="Username" required style="width:100%;margin-bottom:.5rem;padding:.5rem">
+        <input name="password" type="password" placeholder="Password" required style="width:100%;margin-bottom:.5rem;padding:.5rem">
+        <div style="display:flex;gap:.5rem"><button type="submit">Submit</button><button type="button" id="toggleAuth">Switch to Signup</button><button type="button" id="closeAuth">Close</button></div>
+      </form>
+      <div class="small" style="margin-top:.5rem">Note: This SPA stores auth data in the JSON DB (local or repo). For GitHub Pages, use the 'Download JSON' and 'Save to Repo' features to persist changes back to the repository using a GitHub token.</div>
+    </div>
+  </div>
 
-<script>
-const API = ''; // same-origin
-let token = localStorage.getItem('azumi_token') || '';
-let currentUser = JSON.parse(localStorage.getItem('azumi_user') || 'null');
-let isSignupMode = false;
+  <script>
+    // Simple client-side storage + JWT helpers using Web Crypto
+    const DB_PATH = 'data/db.json';
+    let DB = {users:[],scope:[],clients:[],links:[],vendors:[],jwt_secret:'change_this_long_secret'};
+    let currentUser = null;
 
-// ---------------- THEME ----------------
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  document.getElementById('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
-  localStorage.setItem('azumi_theme', theme);
-}
-applyTheme(localStorage.getItem('azumi_theme') || 'light');
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const cur = document.documentElement.getAttribute('data-theme');
-  applyTheme(cur === 'dark' ? 'light' : 'dark');
-});
+    function $(sel){return document.querySelector(sel)}
+    function $all(sel){return Array.from(document.querySelectorAll(sel))}
 
-// ---------------- TOAST ----------------
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
-}
+    function ensureStructure(){
+      if(!DB.users) DB.users = [];
+      if(!DB.scope) DB.scope = [];
+      if(!DB.clients) DB.clients = [];
+      if(!DB.links) DB.links = [];
+      if(!DB.vendors) DB.vendors = [];
+      if(!DB.jwt_secret) DB.jwt_secret = 'change_this_long_secret';
+    }
 
-// ---------------- API HELPER ----------------
-async function api(path, opts = {}) {
-  const headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
-  if (token) headers['Authorization'] = 'Bearer ' + token;
-  const res = await fetch(API + path, Object.assign({}, opts, { headers }));
-  if (res.status === 401) {
-    logout();
-    throw new Error('Session expired, please log in again');
-  }
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || 'Request failed');
-  return data;
-}
+    async function fetchSeed(){
+      // Try to fetch repo seed, fall back to localStorage, always ensure structure
+      try{
+        const r = await fetch(DB_PATH,{cache:'no-store'});
+        if(r && r.ok){
+          const j = await r.json();
+          const local = localStorage.getItem('azumi.db');
+          if(local){
+            // prefer local edits but fill missing keys from repo
+            DB = JSON.parse(local);
+            DB = Object.assign({}, j, DB);
+          } else {
+            DB = Object.assign({}, j);
+            localStorage.setItem('azumi.db',JSON.stringify(DB));
+          }
+        } else {
+          const local = localStorage.getItem('azumi.db');
+          if(local) DB = JSON.parse(local);
+          else {
+            // initialize seed admin on first run
+            DB.jwt_secret = 'change_this_long_secret';
+            DB.users.push({id:1,username:'admin',role:'admin',password:'admin123'});
+            localStorage.setItem('azumi.db',JSON.stringify(DB));
+          }
+        }
+      }catch(e){
+        const local = localStorage.getItem('azumi.db');
+        if(local) DB = JSON.parse(local);
+        else {
+          DB.jwt_secret = 'change_this_long_secret';
+          DB.users.push({id:1,username:'admin',role:'admin',password:'admin123'});
+          localStorage.setItem('azumi.db',JSON.stringify(DB));
+        }
+      }
+      ensureStructure();
+    }
 
-// ---------------- AUTH ----------------
-const authForm = document.getElementById('authForm');
-const authTitle = document.getElementById('authTitle');
-const authSubmitBtn = document.getElementById('authSubmitBtn');
-const authToggleText = document.getElementById('authToggleText');
-const authToggleLink = document.getElementById('authToggleLink');
-const authError = document.getElementById('authError');
+    // debounced save to localStorage so rapid edits don't thrash; other tabs receive 'storage' events
+    let saveTimer = null;
+    function saveLocal(){
+      ensureStructure();
+      if(saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(()=>{
+        try{ localStorage.setItem('azumi.db',JSON.stringify(DB));
+        // notify other tabs by updating a version key
+        localStorage.setItem('azumi.db.version', Date.now().toString());
+        render();
+        }catch(e){console.error('saveLocal error', e)}
+      }, 150);
+    }
 
-authToggleLink.addEventListener('click', () => {
-  isSignupMode = !isSignupMode;
-  if (isSignupMode) {
-    authTitle.textContent = 'Create an Account';
-    authSubmitBtn.textContent = 'Sign Up';
-    authToggleText.textContent = 'Already have an account?';
-    authToggleLink.textContent = 'Log in';
-  } else {
-    authTitle.textContent = 'Welcome to Azumi Hub';
-    authSubmitBtn.textContent = 'Log In';
-    authToggleText.textContent = "Don't have an account?";
-    authToggleLink.textContent = 'Sign up';
-  }
-  authError.textContent = '';
-});
-
-authForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  authError.textContent = '';
-  const username = document.getElementById('authUsername').value.trim();
-  const password = document.getElementById('authPassword').value;
-  const endpoint = isSignupMode ? '/api/auth/signup' : '/api/auth/login';
-  try {
-    const data = await api(endpoint, { method: 'POST', body: JSON.stringify({ username, password }) });
-    token = data.token;
-    currentUser = data.user;
-    localStorage.setItem('azumi_token', token);
-    localStorage.setItem('azumi_user', JSON.stringify(currentUser));
-    showApp();
-  } catch (err) {
-    authError.textContent = err.message;
-  }
-});
-
-function logout() {
-  token = '';
-  currentUser = null;
-  localStorage.removeItem('azumi_token');
-  localStorage.removeItem('azumi_user');
-  document.getElementById('mainScreen').classList.add('hidden');
-  document.getElementById('authScreen').classList.remove('hidden');
-}
-document.getElementById('logoutBtn').addEventListener('click', logout);
-
-// ---------------- TABS ----------------
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
-    btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
-  });
-});
-
-// ---------------- SHOW APP ----------------
-function showApp() {
-  document.getElementById('authScreen').classList.add('hidden');
-  document.getElementById('mainScreen').classList.remove('hidden');
-  document.getElementById('userRole').textContent = currentUser.username + ' · ' + currentUser.role;
-  loadScope();
-  loadClients();
-  loadLinks();
-}
-
-// ====================================================================
-// SCOPE SHEET
-// ====================================================================
-async function loadScope() {
-  try {
-    const rows = await api('/api/scope');
-    const container = document.getElementById('scopeList');
-    if (!rows.length) { container.innerHTML = '<div class="empty-msg">No scope items yet. Add one above.</div>'; return; }
-    container.innerHTML = rows.map(r => `
-      <div class="item" data-id="${r.id}">
-        <div class="item-row">
-          <div>
-            <div class="item-title">${escapeHtml(r.item)}</div>
-            <div class="item-sub">${escapeHtml(r.category || '—')}</div>
-          </div>
-          <span class="badge ${r.status === 'Done' ? 'done' : ''}" data-role="status">${escapeHtml(r.status)}</span>
-        </div>
-        ${r.notes ? `<div class="item-notes">${escapeHtml(r.notes)}</div>` : ''}
-        <div class="btn-row">
-          <select class="btn small secondary" data-action="status" style="flex:0 0 auto;">
-            ${['Pending','In Progress','Done','Blocked'].map(s => `<option ${s===r.status?'selected':''}>${s}</option>`).join('')}
-          </select>
-          <button class="btn small danger" data-action="delete">Delete</button>
-        </div>
-      </div>
-    `).join('');
-
-    container.querySelectorAll('.item').forEach(el => {
-      const id = el.dataset.id;
-      el.querySelector('[data-action="status"]').addEventListener('change', async (e) => {
-        try {
-          await api('/api/scope/' + id, { method: 'PUT', body: JSON.stringify({ status: e.target.value }) });
-          loadScope();
-        } catch (err) { toast(err.message); }
-      });
-      el.querySelector('[data-action="delete"]').addEventListener('click', async () => {
-        if (!confirm('Delete this scope item?')) return;
-        try {
-          await api('/api/scope/' + id, { method: 'DELETE' });
-          loadScope();
-        } catch (err) { toast(err.message); }
-      });
+    // Listen for storage events to sync across tabs
+    window.addEventListener('storage', (e)=>{
+      if(!e.key) return;
+      if(e.key === 'azumi.db' || e.key === 'azumi.db.version'){
+        const local = localStorage.getItem('azumi.db');
+        if(local){
+          try{ const parsed = JSON.parse(local); DB = parsed; ensureStructure(); render(); }
+          catch(err){console.error('failed to parse azumi.db from storage event', err)}
+        }
+      }
     });
-  } catch (err) { toast(err.message); }
-}
 
-document.getElementById('addScopeBtn').addEventListener('click', async () => {
-  const item = document.getElementById('scopeItem').value.trim();
-  if (!item) return toast('Please enter an item');
-  const category = document.getElementById('scopeCategory').value.trim();
-  const status = document.getElementById('scopeStatus').value;
-  const notes = document.getElementById('scopeNotes').value.trim();
-  try {
-    await api('/api/scope', { method: 'POST', body: JSON.stringify({ item, category, status, notes }) });
-    document.getElementById('scopeItem').value = '';
-    document.getElementById('scopeCategory').value = '';
-    document.getElementById('scopeNotes').value = '';
-    document.getElementById('scopeStatus').value = 'Pending';
-    loadScope();
-    toast('Scope item added');
-  } catch (err) { toast(err.message); }
-});
-
-// ====================================================================
-// CLIENTS
-// ====================================================================
-async function loadClients() {
-  try {
-    const rows = await api('/api/clients');
-    const container = document.getElementById('clientsList');
-    if (!rows.length) { container.innerHTML = '<div class="empty-msg">No clients added yet.</div>'; return; }
-    container.innerHTML = rows.map(r => `
-      <div class="item" data-id="${r.id}">
-        <div class="item-row">
-          <div>
-            <div class="item-title">${escapeHtml(r.name)}</div>
-            <div class="item-sub">${escapeHtml(r.project || '—')}</div>
-            <div class="item-sub">${escapeHtml(r.contact || '')}</div>
-          </div>
-        </div>
-        ${r.notes ? `<div class="item-notes">${escapeHtml(r.notes)}</div>` : ''}
-        <div class="btn-row">
-          <button class="btn small danger" data-action="delete">Delete</button>
-        </div>
-      </div>
-    `).join('');
-
-    container.querySelectorAll('.item').forEach(el => {
-      const id = el.dataset.id;
-      el.querySelector('[data-action="delete"]').addEventListener('click', async () => {
-        if (!confirm('Delete this client?')) return;
-        try {
-          await api('/api/clients/' + id, { method: 'DELETE' });
-          loadClients();
-        } catch (err) { toast(err.message); }
+    function render(){
+      $('#currentUser').textContent = currentUser? currentUser.username:'guest';
+      // scope
+      const tbody = $('#scopeTable tbody'); tbody.innerHTML=''; DB.scope.forEach((s,i)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td contenteditable data-i="${i}">${s.title||''}</td><td contenteditable>${s.details||''}</td><td>${s.owner||''}</td><td><button data-i="${i}" class="delScope">Del</button></td>`;
+        tbody.appendChild(tr);
       });
+      // clients
+      const cl = $('#clientsList'); cl.innerHTML=''; DB.clients.forEach((c,i)=>{const d=document.createElement('div');d.innerHTML=`<strong>${c.name}</strong> <div class="small">${c.contact} — ${c.project}</div><div class="small">${c.notes||''}</div>`;cl.appendChild(d)});
+      // links
+      $('#linksList').innerHTML=''; $('#sideLinks').innerHTML=''; DB.links.forEach((l,i)=>{const el=document.createElement('div');el.innerHTML=`<a href="${l.url}" target="_blank">${l.title}</a> <button data-i="${i}" class="delLink">Del</button>`;$('#linksList').appendChild(el);const sl=document.createElement('div');sl.innerHTML=`<a href="${l.url}" target="_blank">${l.title}</a>`;$('#sideLinks').appendChild(sl)});
+      // vendors
+      $('#vendorsList').innerHTML=''; DB.vendors.forEach((v,i)=>{const el=document.createElement('div');el.innerHTML=`<strong>${v.name}</strong> <div class="small">${v.contact||''}</div>`;$('#vendorsList').appendChild(el)});
+    }
+
+    // basic auth: signup/login stored in DB.users (insecure but as requested)
+    function signup(username,password){
+      if(DB.users.find(u=>u.username===username)) throw new Error('user exists');
+      const id = DB.users.length? Math.max(...DB.users.map(u=>u.id))+1:1;
+      DB.users.push({id,username,role:'member',password}); saveLocal();
+      return {id,username,role:'member'};
+    }
+    function login(username,password){
+      const u = DB.users.find(u=>u.username===username && u.password===password);
+      if(!u) throw new Error('invalid');
+      currentUser = u; return u;
+    }
+
+    // UI wiring
+    document.addEventListener('click',e=>{
+      if(e.target.matches('#loginBtn')){ $('#authModal').classList.remove('hidden'); }
+      if(e.target.matches('#closeAuth')){ $('#authModal').classList.add('hidden'); }
+      if(e.target.matches('#toggleAuth')){ const t = $('#authTitle'); t.textContent = t.textContent==='Login'? 'Signup':'Login'; }
+      if(e.target.matches('#newScope')){ DB.scope.push({title:'New item',details:'',owner:currentUser?currentUser.username:'guest'}); saveLocal(); }
+      if(e.target.matches('#newClient')){ $('#tabs button[data-tab="clients"]').click(); }
+      if(e.target.matches('#newLink')){ $('#tabs button[data-tab="links"]').click(); }
+      if(e.target.matches('.delScope')){ const i=+e.target.dataset.i; DB.scope.splice(i,1); saveLocal(); }
+      if(e.target.matches('.delLink')){ const i=+e.target.dataset.i; DB.links.splice(i,1); saveLocal(); }
     });
-  } catch (err) { toast(err.message); }
-}
 
-document.getElementById('addClientBtn').addEventListener('click', async () => {
-  const name = document.getElementById('clientName').value.trim();
-  if (!name) return toast('Please enter a client name');
-  const contact = document.getElementById('clientContact').value.trim();
-  const project = document.getElementById('clientProject').value.trim();
-  const notes = document.getElementById('clientNotes').value.trim();
-  try {
-    await api('/api/clients', { method: 'POST', body: JSON.stringify({ name, contact, project, notes }) });
-    document.getElementById('clientName').value = '';
-    document.getElementById('clientContact').value = '';
-    document.getElementById('clientProject').value = '';
-    document.getElementById('clientNotes').value = '';
-    loadClients();
-    toast('Client added');
-  } catch (err) { toast(err.message); }
-});
+    $('#authForm').addEventListener('submit',e=>{e.preventDefault(); const fm=new FormData(e.target); const username=fm.get('username'), password=fm.get('password'); try{ if($('#authTitle').textContent==='Login'){ login(username,password); alert('Logged in'); $('#authModal').classList.add('hidden'); } else { signup(username,password); alert('Account created'); $('#authModal').classList.add('hidden'); } render(); }catch(err){alert(err.message)} });
 
-// ====================================================================
-// LINKS
-// ====================================================================
-async function loadLinks() {
-  try {
-    const rows = await api('/api/links');
-    const container = document.getElementById('linksList');
-    if (!rows.length) { container.innerHTML = '<div class="empty-msg">No links added yet.</div>'; return; }
-    container.innerHTML = rows.map(r => `
-      <div class="item link-item" data-id="${r.id}">
-        <div class="item-row">
-          <div>
-            <div class="item-title">${escapeHtml(r.title)}</div>
-            <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.url)}</a>
-          </div>
-        </div>
-        ${r.notes ? `<div class="item-notes">${escapeHtml(r.notes)}</div>` : ''}
-        <div class="btn-row">
-          <button class="btn small secondary" data-action="copy">Copy Link</button>
-          <button class="btn small danger" data-action="delete">Delete</button>
-        </div>
-      </div>
-    `).join('');
+    // inline edits to scope table
+    $('#scopeTable').addEventListener('input',e=>{if(e.target.matches('td[contenteditable]')){const tr=e.target.parentElement; const i=+e.target.dataset.i; const tds = tr.querySelectorAll('td'); DB.scope[i] = {title:tds[0].textContent, details:tds[1].textContent, owner:tds[2].textContent}; saveLocal();}});
 
-    container.querySelectorAll('.item').forEach(el => {
-      const id = el.dataset.id;
-      const url = el.querySelector('a').href;
-      el.querySelector('[data-action="copy"]').addEventListener('click', () => {
-        navigator.clipboard.writeText(url).then(() => toast('Link copied'));
-      });
-      el.querySelector('[data-action="delete"]').addEventListener('click', async () => {
-        if (!confirm('Delete this link?')) return;
-        try {
-          await api('/api/links/' + id, { method: 'DELETE' });
-          loadLinks();
-        } catch (err) { toast(err.message); }
-      });
+    // client form
+    $('#clientForm').addEventListener('submit',e=>{e.preventDefault(); const fm=new FormData(e.target); DB.clients.unshift({name:fm.get('name'),contact:fm.get('contact'),project:fm.get('project'),notes:fm.get('notes')}); saveLocal(); e.target.reset();});
+    $('#clearClient').addEventListener('click',()=>$('#clientForm').reset());
+
+    // link form
+    $('#linkForm').addEventListener('submit',e=>{e.preventDefault(); const fm=new FormData(e.target); DB.links.unshift({title:fm.get('title')||fm.get('url'),url:fm.get('url')}); saveLocal(); e.target.reset();});
+
+    // vendor form
+    $('#vendorForm').addEventListener('submit',e=>{e.preventDefault(); const fm=new FormData(e.target); DB.vendors.unshift({name:fm.get('name'),contact:fm.get('contact')}); saveLocal(); e.target.reset();});
+
+    // tabs
+    $('#tabs').addEventListener('click',e=>{if(e.target.matches('button')){ $all('#tabs button').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); const tab=e.target.dataset.tab; ['scope','clients','links','vendors'].forEach(t=>{const el=document.getElementById(t+'View'); if(el) el.classList.toggle('hidden', t!==tab)}); }});
+
+    // theme toggle
+    $('#themeToggle').addEventListener('click',()=>{const a=document.getElementById('app'); const theme = a.getAttribute('data-theme')==='dark'?'light':'dark'; a.setAttribute('data-theme',theme); $('#themeToggle').textContent = theme==='dark'?'☀️':'🌙';});
+
+    // export PDF (very simple snapshot)
+    $('#exportPdf').addEventListener('click',async()=>{
+      const doc = new window.jspdf.jsPDF(); let y=10; doc.setFontSize(14); doc.text('Azumi Ops Export',10,y); y+=8; doc.setFontSize(10);
+      DB.clients.slice(0,10).forEach(c=>{doc.text(`${c.name} — ${c.contact} — ${c.project}`,10,y); y+=6});
+      doc.save('azumi-export.pdf');
     });
-  } catch (err) { toast(err.message); }
-}
 
-document.getElementById('addLinkBtn').addEventListener('click', async () => {
-  const title = document.getElementById('linkTitle').value.trim();
-  const url = document.getElementById('linkUrl').value.trim();
-  if (!title || !url) return toast('Please enter both title and URL');
-  const notes = document.getElementById('linkNotes').value.trim();
-  try {
-    await api('/api/links', { method: 'POST', body: JSON.stringify({ title, url, notes }) });
-    document.getElementById('linkTitle').value = '';
-    document.getElementById('linkUrl').value = '';
-    document.getElementById('linkNotes').value = '';
-    loadLinks();
-    toast('Link added');
-  } catch (err) { toast(err.message); }
-});
+    // download JSON
+    $('#downloadJson').addEventListener('click',()=>{ const a=document.createElement('a'); a.href = 'data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(DB,null,2)); a.download='azumi-db.json'; a.click(); });
 
-// ---------------- UTIL ----------------
-function escapeHtml(str) {
-  return String(str ?? '').replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
-}
+    // Save to GitHub repo (requires token and repo info)
+    $('#saveRepo').addEventListener('click',async()=>{
+      const token = prompt('GitHub personal access token (repo scope)'); if(!token) return alert('token required');
+      const ownerRepo = prompt('Repo owner/name (e.g. user/repo)'); if(!ownerRepo) return; const path= prompt('Path to save file in repo (eg data/db.json)', 'data/db.json');
+      try{
+        // get file sha if exists
+        const api = `https://api.github.com/repos/${ownerRepo}/contents/${path}`;
+        let sha=null; const get = await fetch(api,{headers:{Authorization:'token '+token}});
+        if(get.ok){const j=await get.json(); sha=j.sha}
+        const put = await fetch(api,{method:'PUT',headers:{Authorization:'token '+token,'Content-Type':'application/json'},body:JSON.stringify({message:'Update azumi db',content:btoa(unescape(encodeURIComponent(JSON.stringify(DB,null,2)))),sha})});
+        if(!put.ok) throw new Error('Save failed'); alert('Saved to repo');
+      }catch(err){alert('Save error: '+err.message)}
+    });
 
-// ---------------- INIT ----------------
-if (token && currentUser) {
-  showApp();
-}
-</script>
+    // Load jsPDF via CDN then init
+    (function(){const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s.onload=()=>{console.log('jspdf loaded')}; document.head.appendChild(s);})();
+
+    // init
+    fetchSeed().then(()=>{render();});
+  </script>
 </body>
 </html>
