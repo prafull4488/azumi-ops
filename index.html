@@ -791,6 +791,100 @@ async function supabaseSetState(obj) {
   if(error) throw error;
 }
 
+async function supabaseSyncTables(state) {
+  if(!supabase) throw new Error('no supabase');
+  const batch = [];
+  if(Array.isArray(state.projects) && state.projects.length) {
+    batch.push({
+      table: 'projects',
+      payload: state.projects.map(p => ({
+        id: p.id || 'p' + Date.now() + Math.floor(Math.random()*1000),
+        name: p.name || null,
+        client: p.client || null,
+        location: p.location || null,
+        status: p.status || null,
+        start_date: p.start || null,
+        end_date: p.end || null,
+        budget: p.budget || null,
+        progress: p.progress || 0,
+        notes: p.notes || null,
+        created_at: p.created ? new Date(p.created).toISOString() : new Date().toISOString()
+      }))
+    });
+  }
+  if(Array.isArray(state.clients) && state.clients.length) {
+    batch.push({
+      table: 'clients',
+      payload: state.clients.map(c => ({
+        id: c.id || 'c' + Date.now() + Math.floor(Math.random()*1000),
+        name: c.name || null,
+        phone: c.phone || null,
+        email: c.email || null,
+        property: c.property || null,
+        type: c.type || null,
+        budget: c.budget || null,
+        notes: c.notes || null,
+        created_at: c.created ? new Date(c.created).toISOString() : new Date().toISOString()
+      }))
+    });
+  }
+  if(Array.isArray(state.linkCats) && state.linkCats.length) {
+    batch.push({
+      table: 'link_cats',
+      payload: state.linkCats.map(name => ({ name }))
+    });
+  }
+  if(Array.isArray(state.links) && state.links.length) {
+    batch.push({
+      table: 'links',
+      payload: state.links.map(l => ({
+        id: l.id || 'l' + Date.now() + Math.floor(Math.random()*1000),
+        label: l.label || null,
+        url: l.url || null,
+        cat: l.cat || null,
+        created_at: new Date().toISOString()
+      }))
+    });
+  }
+  if(Array.isArray(state.moodItems) && state.moodItems.length) {
+    batch.push({
+      table: 'mood_items',
+      payload: state.moodItems.map(m => ({
+        id: m.id || 'm' + Date.now() + Math.floor(Math.random()*1000),
+        label: m.label || null,
+        src: m.src || null,
+        project_id: m.project || m.project_id || null,
+        created_at: new Date().toISOString()
+      }))
+    });
+  }
+  if(state.kitData && typeof state.kitData === 'object' && Object.keys(state.kitData).length) {
+    batch.push({
+      table: 'kit_data',
+      payload: Object.keys(state.kitData).map(key => {
+        const docIdxMatch = key.match(/^doc(\d+)_/);
+        return {
+          key,
+          project_tag: key.split('_').slice(1).join('_') || null,
+          doc_idx: docIdxMatch ? parseInt(docIdxMatch[1],10) : null,
+          data: state.kitData[key],
+          updated_at: new Date().toISOString()
+        };
+      })
+    });
+  }
+
+  for(const item of batch) {
+    try {
+      const { error } = await supabase.from(item.table).upsert(item.payload);
+      if(error) throw error;
+      console.debug('Supabase synced table', item.table, item.payload.length);
+    } catch(err) {
+      console.warn(`Supabase sync failed for table ${item.table}`, err);
+    }
+  }
+}
+
 async function syncFromSupabase() {
   const ok = await initSupabase();
   if(!ok) return false;
@@ -799,6 +893,12 @@ async function syncFromSupabase() {
     S = data;
     localStorage.setItem(KEY, JSON.stringify(S));
     try { renderDashboard(); renderClients(); renderLinks(); renderMoodboard(); } catch(e){}
+    try {
+      await supabaseSyncTables(S);
+      console.debug('Supabase normalized tables synced after load');
+    } catch(e) {
+      console.warn('Supabase normalized table sync after load failed', e);
+    }
     document.getElementById('syncBadge').textContent = 'Supabase';
     toast('Synced from Supabase');
     return true;
@@ -839,6 +939,7 @@ function save() {
         const ok = await initSupabase();
         if(ok && supabase) {
           await supabaseSetState(S);
+          await supabaseSyncTables(S);
           document.getElementById('syncBadge').textContent = 'Supabase';
           return;
         }
@@ -904,6 +1005,7 @@ async function manualSync() {
     const ok = await initSupabase();
     if(ok && supabase) {
       await supabaseSetState(S);
+      await supabaseSyncTables(S);
       document.getElementById('syncBadge').textContent='Supabase';
       toast('Synced to Supabase');
       return;
