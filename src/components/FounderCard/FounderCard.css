@@ -1,0 +1,53 @@
+.founder-card-container {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 560px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #12150f;
+  box-shadow: 0 30px 70px -30px rgba(22,26,18,0.55), 0 0 0 1px rgba(250,247,236,0.08) inset;
+  isolation: isolate;
+  font-family: var(--font-body);
+}
+.founder-svg-filters { position: absolute; width: 0; height: 0; pointer-events: none; opacity: 0; }
+.founder-photo-bg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.08);
+  filter: saturate(var(--saturation, 1)) contrast(108%) brightness(96%) blur(var(--blur-strength, 6px)) url(#founder-metallic-displacement);
+  z-index: 0; opacity: 0.96; transition: transform 0.4s ease;
+}
+.founder-noise {
+  position: absolute; inset: 0; z-index: 1; opacity: var(--roughness, 0.22); pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+.founder-sheen {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none; mix-blend-mode: overlay; opacity: var(--metalness, 0.55);
+  background: linear-gradient(135deg, rgba(212,240,0,0.35) 0%, rgba(250,247,236,0.12) 40%, rgba(250,247,236,0) 50%, rgba(255,138,101,0.15) 60%, rgba(212,240,0,0.25) 100%);
+}
+.founder-border {
+  position: absolute; inset: 0; border-radius: 28px; padding: 1px;
+  background: linear-gradient(135deg, rgba(250,247,236,0.7) 0%, rgba(250,247,236,0.15) 50%, rgba(212,240,0,0.4) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask-composite: exclude;
+  z-index: 20; pointer-events: none;
+}
+.founder-content {
+  position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+  padding: 34px 32px; color: var(--text-color, #faf7ec); background: var(--overlay-color, rgba(22,26,18,0.28));
+}
+.fc-header { display: flex; justify-content: flex-start; }
+.fc-badge {
+  font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; padding: 6px 13px;
+  background: rgba(250,247,236,0.14); border-radius: 99px; border: 1px solid rgba(250,247,236,0.25); font-family: var(--font-mono);
+}
+.fc-body { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding-bottom: 26px; }
+.fc-name { font-family: var(--font-display); font-size: 30px; font-weight: 600; margin: 0; letter-spacing: -0.01em; text-shadow: 0 2px 10px rgba(0,0,0,0.35); }
+.fc-role { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; margin: 0; }
+.fc-statement { font-size: 14.5px; line-height: 1.6; opacity: 0.92; margin: 6px 0 0; max-width: 34ch; }
+.fc-footer { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid rgba(250,247,236,0.2); padding-top: 20px; }
+.fc-meta { display: flex; flex-direction: column; gap: 3px; }
+.fc-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.55; font-family: var(--font-mono); }
+.fc-val { font-size: 13.5px; }
+@media (max-width: 480px) { .founder-card-container { height: 520px; } }

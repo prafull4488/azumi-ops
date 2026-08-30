@@ -1,0 +1,37 @@
+.st-outer-container {
+  --st-accent: #161a12;
+  --st-accent-fg: #faf7ec;
+  --st-inactive-bg: #eee7d3;
+  --st-inactive-fg: #8c8a72;
+  display: flex; width: 100%; flex-direction: column; align-items: center; justify-content: center;
+}
+.st-step-circle-container {
+  margin-left: auto; margin-right: auto; width: 100%; max-width: 100%;
+  border-radius: 28px; background: var(--card, #fffdf6);
+  box-shadow: 0 24px 60px -32px rgba(22,26,18,0.35);
+  border: 1px solid var(--line, rgba(22,26,18,0.12));
+}
+.st-step-indicator-row { display: flex; width: 100%; align-items: center; padding: 2.4rem 2.6rem 1.6rem; }
+.st-step-content-default { position: relative; overflow: hidden; }
+.st-step-default { padding: 0 2.6rem 1rem; min-height: 220px; }
+.st-footer-container { padding: 0 2.6rem 2.4rem; }
+.st-footer-nav { margin-top: 1.5rem; display: flex; }
+.st-footer-nav.spread { justify-content: space-between; }
+.st-footer-nav.end { justify-content: flex-end; }
+.st-back-button {
+  transition: color 0.25s ease; border-radius: 99px; padding: 0.6rem 1.1rem; color: var(--ink-soft, #454f3c);
+  cursor: pointer; background: transparent; border: none; font-family: var(--font-body); font-size: 0.9rem;
+}
+.st-back-button:hover { color: var(--ink, #161a12); }
+.st-next-button {
+  transition: transform 0.25s ease, background 0.25s ease; display: flex; align-items: center; justify-content: center;
+  border-radius: 99px; background: var(--lime, #d4f000); color: var(--ink, #161a12); font-weight: 600;
+  letter-spacing: -0.01em; padding: 0.7rem 1.5rem; cursor: pointer; border: none; font-family: var(--font-body); font-size: 0.9rem;
+}
+.st-next-button:hover { transform: translateY(-2px); }
+.st-step-indicator { position: relative; cursor: pointer; outline: none; }
+.st-step-indicator-inner { display: flex; height: 2.4rem; width: 2.4rem; align-items: center; justify-content: center; border-radius: 99px; font-weight: 600; }
+.st-step-number { font-size: 0.9rem; font-family: var(--font-mono); }
+.st-step-connector { position: relative; margin: 0 0.6rem; height: 2px; flex: 1; overflow: hidden; border-radius: 0.25rem; background: var(--line, rgba(22,26,18,0.14)); }
+.st-step-connector-inner { position: absolute; left: 0; top: 0; height: 100%; }
+.st-check-icon { height: 1.1rem; width: 1.1rem; }
