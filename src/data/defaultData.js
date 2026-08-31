@@ -5,15 +5,15 @@ export const DEFAULT_DATA = {
     line2: 'Architecture & Interiors',
     sub: 'A woman-led architecture and interior design studio in Goa, shaping homes around light, material and the way you actually live.',
     scrollHint: 'Scroll to explore',
-    image: 'https://picsum.photos/id/1044/1800/1150'
+    image: '/images/hero/HeroImage.png'
   },
   projects: [
-    { title: 'Casa Laterite', type: 'Completed', location: 'Assagao, Goa', one: 'A courtyard home built almost entirely from local laterite stone.', image: 'https://picsum.photos/id/1015/800/1000' },
-    { title: 'The Sangolda Villa', type: 'Completed', location: 'Sangolda, Goa', one: 'A holiday villa organised around a single mango tree and its shade.', image: 'https://picsum.photos/id/1039/800/1000' },
-    { title: 'Studio Anjuna', type: 'Ongoing', location: 'Anjuna, Goa', one: "A live-work space for a ceramicist, with a kiln room open to the garden.", image: 'https://picsum.photos/id/1043/800/1000' },
-    { title: 'House on the Khazan', type: 'Ongoing', location: 'Siolim, Goa', one: "A raised home responding to the site's seasonal flood plain.", image: 'https://picsum.photos/id/1018/800/1000' },
-    { title: 'Reis Magos Residence', type: 'Completed', location: 'Reis Magos, Goa', one: 'A hillside home turned toward the river, away from the road.', image: 'https://picsum.photos/id/1025/800/1000' },
-    { title: 'The Moira Retreat', type: 'Ongoing', location: 'Moira, Goa', one: 'A small guesthouse cluster set among existing paddy fields.', image: 'https://picsum.photos/id/1041/800/1000' }
+    { title: 'Casa Laterite', type: 'Completed', location: 'Assagao, Goa', one: 'A courtyard home built almost entirely from local laterite stone.', image: '/images/projects/Amma Manne/Render.jpeg' },
+    { title: 'The Sangolda Villa', type: 'Completed', location: 'Sangolda, Goa', one: 'A holiday villa organised around a single mango tree and its shade.', image: '/images/projects/Avshata/Living1.JPG' },
+    { title: 'Studio Anjuna', type: 'Ongoing', location: 'Anjuna, Goa', one: 'A live-work space for a ceramicist, with a kiln room open to the garden.', image: '/images/projects/Bengaluru Manne/Living.jpeg' },
+    { title: 'House on the Khazan', type: 'Ongoing', location: 'Siolim, Goa', one: "A raised home responding to the site's seasonal flood plain.", image: '/images/projects/Costal Chic/Living.jpg' },
+    { title: 'Reis Magos Residence', type: 'Completed', location: 'Reis Magos, Goa', one: 'A hillside home turned toward the river, away from the road.', image: '/images/projects/Miraki/Master_bedroom_flooring.jpeg' },
+    { title: 'The Moira Retreat', type: 'Ongoing', location: 'Moira, Goa', one: 'A small guesthouse cluster set among existing paddy fields.', image: '/images/projects/Modern Comfort/M bedroom.png' }
   ],
   about: {
     statementPre: 'Architecture that begins with ',
@@ -27,10 +27,10 @@ export const DEFAULT_DATA = {
     ]
   },
   services: [
-    { title: 'Architecture', body: 'Homes, villas, holiday homes and new-build projects, designed from the first sketch to the working drawing.', image: 'https://picsum.photos/id/1076/1000/1200' },
-    { title: 'Interior Design', body: 'Residential and selected hospitality interiors — layouts, materials, furniture and lighting, considered together.', image: 'https://picsum.photos/id/1080/1000/1200' },
-    { title: 'Turnkey', body: 'From design development through execution, with one team accountable for the space you actually receive.', image: 'https://picsum.photos/id/1082/1000/1200' },
-    { title: 'Vastu-informed Planning', body: 'Contemporary design with considered spatial planning, for clients who want both.', image: 'https://picsum.photos/id/1074/1000/1200' }
+    { title: 'Architecture', body: 'Homes, villas, holiday homes and new-build projects, designed from the first sketch to the working drawing.', image: '/images/services/Architectural.jpeg' },
+    { title: 'Interior Design', body: 'Residential and selected hospitality interiors — layouts, materials, furniture and lighting, considered together.', image: '/images/services/Interiors.jpeg' },
+    { title: 'Turnkey', body: 'From design development through execution, with one team accountable for the space you actually receive.', image: '/images/services/Turnkey.jpeg' },
+    { title: 'Vastu-informed Planning', body: 'Contemporary design with considered spatial planning, for clients who want both.', image: '/images/services/Vastu.jpeg' }
   ],
   processSteps: [
     { title: 'Conversation', text: 'Understanding you, your site and your ambitions.', tags: ['Architecture', 'Interior', 'Turnkey', 'Vastu'] },
@@ -42,7 +42,7 @@ export const DEFAULT_DATA = {
   founder: {
     name: 'Sindhu Kodihal',
     role: 'Founder & Principal Architect',
-    photo: 'https://picsum.photos/id/1027/800/1000',
+    photo: '/images/Sindhu/Profile_Picture.jpg',
     statement: "I started Azumi because I kept meeting people who wanted a home that felt like Goa, not a home that happened to be built here. Our work is slow on purpose — small enough that I know the site, the mason and the client by name.",
     practice: '38 projects across homes, villas and interiors',
     focus: 'Residential architecture, material detailing, Vastu-informed planning',
