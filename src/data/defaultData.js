@@ -8,12 +8,13 @@ export const DEFAULT_DATA = {
     image: '/images/hero/HeroImage.png'
   },
   projects: [
-    { title: 'Casa Laterite', type: 'Completed', location: 'Assagao, Goa', one: 'A courtyard home built almost entirely from local laterite stone.', image: '/images/projects/Amma Manne/Render.jpeg' },
-    { title: 'The Sangolda Villa', type: 'Completed', location: 'Sangolda, Goa', one: 'A holiday villa organised around a single mango tree and its shade.', image: '/images/projects/Avshata/Living1.JPG' },
-    { title: 'Studio Anjuna', type: 'Ongoing', location: 'Anjuna, Goa', one: 'A live-work space for a ceramicist, with a kiln room open to the garden.', image: '/images/projects/Bengaluru Manne/Living.jpeg' },
-    { title: 'House on the Khazan', type: 'Ongoing', location: 'Siolim, Goa', one: "A raised home responding to the site's seasonal flood plain.", image: '/images/projects/Costal Chic/Living.jpg' },
-    { title: 'Reis Magos Residence', type: 'Completed', location: 'Reis Magos, Goa', one: 'A hillside home turned toward the river, away from the road.', image: '/images/projects/Miraki/Master_bedroom_flooring.jpeg' },
-    { title: 'The Moira Retreat', type: 'Ongoing', location: 'Moira, Goa', one: 'A small guesthouse cluster set among existing paddy fields.', image: '/images/projects/Modern Comfort/M bedroom.png' }
+    { title: 'Amma Manne', type: 'Completed', location: 'Goa', one: 'Terrace and living views from Amma Manne.', image: '/images/projects/Amma Manne/Render.jpeg' },
+    { title: 'Avshata', type: 'Completed', location: 'Goa', one: 'Interiors and details from Avshata project.', image: '/images/projects/Avshata/Bedroom1.JPG' },
+    { title: 'Bengaluru Manne', type: 'Completed', location: 'Bengaluru', one: 'Living and dining compositions.', image: '/images/projects/Bengaluru Manne/Living.jpeg' },
+    { title: 'Costal Chic', type: 'Completed', location: 'Goa', one: 'Coastal interior palette and living spaces.', image: '/images/projects/Costal Chic/Living.jpg' },
+    { title: 'Miraki', type: 'Completed', location: 'Goa', one: 'Flooring and material studies.', image: '/images/projects/Miraki/Master_bedroom_flooring.jpeg' },
+    { title: 'Modern Comfort', type: 'Ongoing', location: 'Goa', one: 'Contemporary bedrooms and kitchen.', image: '/images/projects/Modern Comfort/M bedroom.png' },
+    { title: 'Serene Dreams', type: 'Completed', location: 'Goa', one: 'Bedroom collages and calm palettes.', image: '/images/projects/Serene Dreams/C.png' }
   ],
   about: {
     statementPre: 'Architecture that begins with ',
@@ -28,8 +29,8 @@ export const DEFAULT_DATA = {
   },
   services: [
     { title: 'Architecture', body: 'Homes, villas, holiday homes and new-build projects, designed from the first sketch to the working drawing.', image: '/images/services/Architectural.jpeg' },
-    { title: 'Interior Design', body: 'Residential and selected hospitality interiors — layouts, materials, furniture and lighting, considered together.', image: '/images/services/Interiors.jpeg' },
-    { title: 'Turnkey', body: 'From design development through execution, with one team accountable for the space you actually receive.', image: '/images/services/Turnkey.jpeg' },
+    { title: 'Interior Design', body: 'Residential and selected hospitality interiors — layouts, materials, furniture and lighting, considered together.', image: '/images/services/Interiors1.jpeg' },
+    { title: 'Turnkey', body: 'From design development through execution, with one team accountable for the space you actually receive.', image: '/images/services/Execution1.jpeg' },
     { title: 'Vastu-informed Planning', body: 'Contemporary design with considered spatial planning, for clients who want both.', image: '/images/services/Vastu.jpeg' }
   ],
   processSteps: [

@@ -7,7 +7,23 @@ const SiteDataContext = createContext(null);
 function loadInitial() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return { ...structuredClone(DEFAULT_DATA), ...JSON.parse(raw) };
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      // deep merge parsed over DEFAULT_DATA so missing nested fields keep defaults
+      const merge = (base, over) => {
+        if (!over || typeof over !== 'object') return base;
+        const out = Array.isArray(base) ? [...base] : { ...base };
+        for (const k of Object.keys(over)) {
+          if (base && typeof base[k] === 'object' && !Array.isArray(base[k])) {
+            out[k] = merge(base[k], over[k]);
+          } else {
+            out[k] = over[k];
+          }
+        }
+        return out;
+      };
+      return merge(structuredClone(DEFAULT_DATA), parsed);
+    }
   } catch {
     /* ignore */
   }
