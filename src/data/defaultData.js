@@ -5,11 +5,11 @@ export const DEFAULT_DATA = {
     line2: 'Architecture & Interiors',
     sub: 'A woman-led architecture and interior design studio in Goa, shaping homes around light, material and the way you actually live.',
     scrollHint: 'Scroll to explore',
-    image: '/images/hero/HeroImage.png'
+    image: '/images/projects/Avshata/Living1.JPG'
   },
   projects: [
     { title: 'Amma Manne', type: 'Completed', location: 'Goa', one: 'Terrace and living views from Amma Manne.', image: '/images/projects/Amma Manne/Render.jpeg' },
-    { title: 'Avshata', type: 'Completed', location: 'Goa', one: 'Interiors and details from Avshata project.', image: '/images/projects/Avshata/Bedroom1.JPG' },
+    { title: 'Avshata', type: 'Completed', location: 'Goa', one: 'Interiors and details from Avshata project.', image: '/images/projects/Avshata/Living1.JPG' },
     { title: 'Bengaluru Manne', type: 'Completed', location: 'Bengaluru', one: 'Living and dining compositions.', image: '/images/projects/Bengaluru Manne/Living.jpeg' },
     { title: 'Costal Chic', type: 'Completed', location: 'Goa', one: 'Coastal interior palette and living spaces.', image: '/images/projects/Costal Chic/Living.jpg' },
     { title: 'Miraki', type: 'Completed', location: 'Goa', one: 'Flooring and material studies.', image: '/images/projects/Miraki/Master_bedroom_flooring.jpeg' },
@@ -28,8 +28,8 @@ export const DEFAULT_DATA = {
     ]
   },
   services: [
-    { title: 'Architecture', body: 'Homes, villas, holiday homes and new-build projects, designed from the first sketch to the working drawing.', image: '/images/services/Architectural.jpeg' },
-    { title: 'Interior Design', body: 'Residential and selected hospitality interiors — layouts, materials, furniture and lighting, considered together.', image: '/images/services/Interiors1.jpeg' },
+    { title: 'Architecture', body: 'Homes, villas, holiday homes and new-build projects, designed from the first sketch to the working drawing.', image: '/images/projects/Amma Manne/Render.jpeg' },
+    { title: 'Interior Design', body: 'Residential and selected hospitality interiors — layouts, materials, furniture and lighting, considered together.', image: '/images/projects/Avshata/Bedroom1.JPG' },
     { title: 'Turnkey', body: 'From design development through execution, with one team accountable for the space you actually receive.', image: '/images/services/Execution1.jpeg' },
     { title: 'Vastu-informed Planning', body: 'Contemporary design with considered spatial planning, for clients who want both.', image: '/images/services/Vastu.jpeg' }
   ],
@@ -60,12 +60,12 @@ export const DEFAULT_DATA = {
     { label: 'indoor / outdoor', image: 'https://picsum.photos/id/1040/600/900', height: 440 }
   ],
   journal: [
-    { tag: 'Getting Started', title: 'Building a Home in Goa: Where Should You Start?', excerpt: 'Before the design, before the drawings — the questions worth answering first.', date: 'Aug 2026', read: '5 min read', image: 'https://picsum.photos/id/1084/800/560' },
-    { tag: 'Budgets', title: 'What Does It Cost to Build a House in Goa in 2026?', excerpt: 'A realistic range by scope, and where the money actually goes.', date: 'Jul 2026', read: '7 min read', image: 'https://picsum.photos/id/1071/800/560' },
-    { tag: 'Villas', title: '5 Things to Know Before Designing a Villa in Goa', excerpt: 'From flood plains to fencing laws — the practical side of villa design.', date: 'Jul 2026', read: '6 min read', image: 'https://picsum.photos/id/1062/800/560' },
-    { tag: 'Vastu', title: 'Vastu + Contemporary Architecture: Can They Work Together?', excerpt: 'How we plan for Vastu without giving up a modern layout.', date: 'Jun 2026', read: '4 min read', image: 'https://picsum.photos/id/1059/800/560' },
-    { tag: 'Materials', title: "Choosing Materials for Goa's Coastal Climate", excerpt: "What actually holds up to monsoon, salt air and heat — and what doesn't.", date: 'Jun 2026', read: '6 min read', image: 'https://picsum.photos/id/1057/800/560' },
-    { tag: 'Approvals', title: 'Panchayat Approvals in Goa: A Plain-English Guide', excerpt: 'What gets submitted, in what order, and how long it typically takes.', date: 'May 2026', read: '8 min read', image: 'https://picsum.photos/id/1035/800/560' }
+    { tag: 'Getting Started', title: 'Building a Home in Goa: Where Should You Start?', excerpt: 'Before the design, before the drawings — the questions worth answering first.', date: 'Aug 2026', read: '5 min read', image: '/images/journal/1777807167653.png' },
+    { tag: 'Budgets', title: 'What Does It Cost to Build a House in Goa in 2026?', excerpt: 'A realistic range by scope, and where the money actually goes.', date: 'Jul 2026', read: '7 min read', image: '/images/journal/Execution.jpeg' },
+    { tag: 'Villas', title: '5 Things to Know Before Designing a Villa in Goa', excerpt: 'From flood plains to fencing laws — the practical side of villa design.', date: 'Jul 2026', read: '6 min read', image: '/images/journal/Interiors.jpeg' },
+    { tag: 'Vastu', title: 'Vastu + Contemporary Architecture: Can They Work Together?', excerpt: 'How we plan for Vastu without giving up a modern layout.', date: 'Jun 2026', read: '4 min read', image: '/images/journal/SiteVisit1.jpeg' },
+    { tag: 'Materials', title: "Choosing Materials for Goa's Coastal Climate", excerpt: "What actually holds up to monsoon, salt air and heat — and what doesn't.", date: 'Jun 2026', read: '6 min read', image: '/images/journal/Turnkey.jpeg' },
+    { tag: 'Approvals', title: 'Panchayat Approvals in Goa: A Plain-English Guide', excerpt: 'What gets submitted, in what order, and how long it typically takes.', date: 'May 2026', read: '8 min read', image: '/images/journal/1777807167653.png' }
   ],
   faq: [
     { q: 'Where do you take on projects?', a: "Mostly across Goa — North and South. We occasionally take select projects outside Goa; write to us with the location and we'll let you know." },

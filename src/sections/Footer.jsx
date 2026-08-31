@@ -7,7 +7,7 @@ export default function Footer({ onOpenAdmin }) {
       <div className="wrap">
         <div className="foot-grid">
           <div className="foot-col">
-            <div className="foot-brand"><span className="foot-logo">A</span> Azumi Designs</div>
+            <div className="foot-brand"><img src="/images/logo/Azumi_designs.png" alt="Azumi Designs" style={{ height: 28, marginRight: 8 }} /> Azumi Designs</div>
             <p className="foot-desc">
               Azumi Designs is a woman-led architecture and interior design studio in Goa.
               Project availability, scope and fees vary by site and phase — see a proposal for binding terms.

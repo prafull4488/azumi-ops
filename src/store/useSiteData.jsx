@@ -14,10 +14,13 @@ function loadInitial() {
         if (!over || typeof over !== 'object') return base;
         const out = Array.isArray(base) ? [...base] : { ...base };
         for (const k of Object.keys(over)) {
-          if (base && typeof base[k] === 'object' && !Array.isArray(base[k])) {
-            out[k] = merge(base[k], over[k]);
+          const v = over[k];
+          // prefer defaults if stored value is an empty string
+          if (typeof v === 'string' && v.trim() === '') continue;
+          if (base && typeof base[k] === 'object' && !Array.isArray(base[k]) && typeof v === 'object' && !Array.isArray(v)) {
+            out[k] = merge(base[k], v);
           } else {
-            out[k] = over[k];
+            out[k] = v;
           }
         }
         return out;

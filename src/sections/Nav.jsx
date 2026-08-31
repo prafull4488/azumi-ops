@@ -18,7 +18,10 @@ export default function Nav() {
   return (
     <header className={`nav-site ${scrolled ? 'scrolled' : ''}`}>
       <div className="navrow">
-        <div className="brand"><span className="dot" />Azumi Designs</div>
+        <div className="brand">
+          <img src="/images/logo/Logo.png" alt="Azumi Designs" style={{ height: 32, marginRight: 8 }} />
+          Azumi Designs
+        </div>
         <nav className="links">
           {LINKS.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
         </nav>
