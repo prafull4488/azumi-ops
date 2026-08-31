@@ -17,12 +17,13 @@ export default function Hero() {
           src={h.image}
           alt="Azumi Designs architecture"
           useWindowScroll
-          scrollDistance={1.1}
-          holdDistance={0.3}
-          startWidth={46}
-          startHeight={56}
-          startRadius={28}
-          mediaZoom={1.3}
+          scrollDistance={1.0}
+          holdDistance={0.25}
+          startWidth={20}
+          startHeight={28}
+          startRadius={18}
+          mediaZoom={1.15}
+          overlayScrim={0.18}
           scrollHint={h.scrollHint}
           title={
             <MaskedHeading

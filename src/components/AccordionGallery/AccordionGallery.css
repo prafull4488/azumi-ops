@@ -41,6 +41,7 @@
   background: rgba(250,247,236,0.92); color: #161a12; z-index: 2;
 }
 .ag-panel__label { position: absolute; left: 22px; bottom: 22px; right: 22px; display: flex; align-items: flex-start; gap: 12px; pointer-events: none; z-index: 2; }
+.ag-panel__label { position: absolute; left: 22px; bottom: 22px; right: 22px; display: flex; align-items: flex-end; gap: 12px; pointer-events: none; z-index: 2; }
 .ag-panel__bar {
   flex: 0 0 auto; width: 3px; height: 30px; margin-top: 3px; border-radius: 3px; background: var(--ag-accent); opacity: 0;
   box-shadow: 0 0 12px color-mix(in srgb, var(--ag-accent) 60%, transparent);
