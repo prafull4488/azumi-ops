@@ -1,56 +1,58 @@
-import LightRays from '../components/LightRays/LightRays';
-import ScrollExpand from '../components/ScrollExpand/ScrollExpand';
-import MaskedHeading from '../components/MaskedHeading/MaskedHeading';
 import { useSiteData } from '../store/useSiteData';
 
 export default function Hero() {
   const { data } = useSiteData();
   const h = data.hero;
 
+  const words = h.line2.trim().split(' ');
+  const lastWord = words.pop();
+  const leadWords = words.join(' ');
+
   return (
-    <section className="hero-sec" id="hero">
-      <div style={{ position: 'sticky', top: 0, height: '100vh', zIndex: 0, pointerEvents: 'none' }}>
-        <LightRays raysOrigin="top-center" raysColor="#d4f000" raysSpeed={1.1} lightSpread={0.9} rayLength={1.3} noiseAmount={0.06} distortion={0.03} mouseInfluence={0.08} />
-      </div>
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <ScrollExpand
-          src={h.image}
-          alt="Azumi Designs architecture"
-          useWindowScroll
-          scrollDistance={1.0}
-          holdDistance={0.25}
-          startWidth={20}
-          startHeight={28}
-          startRadius={18}
-          mediaZoom={1.15}
-          overlayScrim={0.18}
-          scrollHint={h.scrollHint}
-          title={
-            <MaskedHeading
-              text={h.line1}
-              tag="div"
-              mediaType="image"
-              src={h.image}
-              reveal="rise"
-              trigger="mount"
-              textScale={0.15}
-              parallax={18}
-              drift={10}
-              tracking={-0.03}
-            />
-          }
-        >
-          <div className="hero-overlay-content">
-            <span className="hero-eyebrow-tag mono">{h.eyebrow}</span>
-            <h2 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,44px)' }}>{h.line2}</h2>
-            <p className="hero-sub">{h.sub}</p>
-            <div className="hero-actions">
-              <a href="#projects" className="btn btn-primary">View our work →</a>
-              <a href="#contact" className="btn btn-ghost">Start a conversation</a>
-            </div>
+    <section className="hero-sec" id="hero" data-testid="hero-section">
+      <div className="hero-grain" aria-hidden="true" />
+      <div className="hero-inner">
+        <div className="hero-copy">
+          <span className="hero-kicker mono" data-testid="hero-kicker">
+            <span className="hero-kicker-line" />
+            {h.line1} · Goa
+          </span>
+
+          <h1 className="hero-title" data-testid="hero-title">
+            {leadWords} <em>{lastWord}</em>
+          </h1>
+
+          <p className="hero-eyebrow-tag mono">{h.eyebrow}</p>
+
+          <p className="hero-sub" data-testid="hero-sub">{h.sub}</p>
+
+          <div className="hero-actions">
+            <a href="#projects" className="btn btn-primary" data-testid="hero-view-work-btn">View our work →</a>
+            <a href="#contact" className="btn btn-ghost" data-testid="hero-contact-btn">Start a conversation</a>
           </div>
-        </ScrollExpand>
+
+          <div className="hero-meta" data-testid="hero-meta">
+            <div className="hm-item"><span className="hm-num">38+</span><span className="hm-label">Projects delivered</span></div>
+            <span className="hm-div" />
+            <div className="hm-item"><span className="hm-num">Woman-led</span><span className="hm-label">Studio & practice</span></div>
+            <span className="hm-div" />
+            <div className="hm-item"><span className="hm-num">Goa · Karnataka</span><span className="hm-label">& beyond</span></div>
+          </div>
+        </div>
+
+        <div className="hero-figure" data-testid="hero-figure">
+          <div className="hero-figure-glow" aria-hidden="true" />
+          <div className="hero-figure-frame">
+            <img src={h.image} alt="Azumi Designs architecture" />
+            <span className="hero-figure-cap mono">{h.caption}</span>
+          </div>
+        </div>
       </div>
+
+      <a href="#projects" className="hero-scroll mono" data-testid="hero-scroll-hint" aria-label="Scroll to explore">
+        <span>{h.scrollHint}</span>
+        <span className="hero-scroll-line" />
+      </a>
     </section>
   );
 }

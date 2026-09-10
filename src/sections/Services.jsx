@@ -34,15 +34,7 @@ export default function Services() {
             ))}
           </div>
         </div>
-        <a
-          href="#contact"
-          className="serv-explore"
-          onClick={e => {
-            e.preventDefault();
-            const el = document.getElementById('contact');
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }}
-        >Explore our services →</a>
+        <a href="#contact" className="serv-explore">Explore our services →</a>
       </div>
     </section>
   );

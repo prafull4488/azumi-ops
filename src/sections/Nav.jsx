@@ -18,10 +18,7 @@ export default function Nav() {
   return (
     <header className={`nav-site ${scrolled ? 'scrolled' : ''}`}>
       <div className="navrow">
-        <div className="brand">
-          <img src="/images/logo/Logo.png" alt="Azumi Designs" style={{ height: 32, marginRight: 8 }} />
-          Azumi Designs
-        </div>
+        <a href="#hero" className="brand" data-testid="nav-brand"><img src="/images/logo/Azumi_designs.png" alt="Azumi Designs" /></a>
         <nav className="links">
           {LINKS.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
         </nav>
