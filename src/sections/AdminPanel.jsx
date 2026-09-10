@@ -40,7 +40,7 @@ function Field({ label, value, onChange, textarea, type = 'text', options }) {
   );
 }
 
-export default function AdminPanel({ onClose }) {
+export default function AdminPanel({ onClose, onLock }) {
   const { data, setData, resetToDefault } = useSiteData();
   const [draft, setDraft] = useState(() => structuredClone(data));
   const [tab, setTab] = useState('hero');
@@ -49,7 +49,7 @@ export default function AdminPanel({ onClose }) {
   useEffect(() => { setDraft(structuredClone(data)); }, [data]);
 
   const showToast = msg => { setToast(msg); setTimeout(() => setToast(''), 2600); };
-  const save = () => { setData(draft); showToast('Saved — changes are live on the site.'); };
+  const save = () => { setData(draft); showToast('Saved — changes are live in this browser.'); };
   const set = (path, value) => {
     setDraft(prev => {
       const next = structuredClone(prev);
@@ -69,6 +69,7 @@ export default function AdminPanel({ onClose }) {
         <div className="admin-bar-actions">
           <button className="btn btn-ghost admin-reset" onClick={() => { if (confirm('Reset all content to the original defaults? This discards your edits.')) { resetToDefault(); showToast('Reset to defaults.'); } }}>Reset defaults</button>
           <button className="btn btn-primary admin-save-btn" onClick={save}>Save changes</button>
+          {onLock && <button className="btn btn-ghost admin-close-btn" onClick={onLock}>Lock</button>}
           <button className="btn btn-ghost admin-close-btn" onClick={onClose}>Close</button>
         </div>
       </div>

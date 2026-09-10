@@ -12,11 +12,12 @@ import Journal from './sections/Journal';
 import Faq from './sections/Faq';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
-import AdminPanel from './sections/AdminPanel';
+import AdminGate from './components/AdminGate/AdminGate';
 import './sections.css';
 
+const ADMIN_PATH = '/azumiControl';
+
 function SiteContent() {
-  const [adminOpen, setAdminOpen] = useState(false);
   const [toast, setToast] = useState('');
 
   const showToast = msg => {
@@ -39,17 +40,19 @@ function SiteContent() {
         <Faq />
         <Contact onSubmitted={showToast} />
       </main>
-      <Footer onOpenAdmin={() => setAdminOpen(true)} />
-      {adminOpen && <AdminPanel onClose={() => setAdminOpen(false)} />}
+      <Footer />
       <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
     </>
   );
 }
 
 export default function App() {
+  const path = window.location.pathname.replace(/\/+$/, '');
+  const isAdmin = path === ADMIN_PATH;
+
   return (
     <SiteDataProvider>
-      <SiteContent />
+      {isAdmin ? <AdminGate /> : <SiteContent />}
     </SiteDataProvider>
   );
 }

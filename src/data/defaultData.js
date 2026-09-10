@@ -6,7 +6,7 @@ export const DEFAULT_DATA = {
     sub: 'A woman-led architecture and interior design studio, shaping homes around light, material and the way you actually live.',
     scrollHint: 'Scroll to explore',
     image: '/images/hero/HeroImage.png',
-    video: '/images/hero/AzumiDesigns.mp4',
+    video: '/images/hero/AzumiDesigns-web.mp4',
     caption: 'Kadilkar Residence — a brick-jaali façade lit for the evening.'
   },
   projects: [

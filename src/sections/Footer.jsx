@@ -1,6 +1,6 @@
 import { useSiteData } from '../store/useSiteData';
 
-export default function Footer({ onOpenAdmin }) {
+export default function Footer() {
   const { data } = useSiteData();
   return (
     <footer className="site-footer">
@@ -39,7 +39,6 @@ export default function Footer({ onOpenAdmin }) {
         </div>
         <div className="foot-bottom">
           <span>© {new Date().getFullYear()} Azumi Designs. All rights reserved.</span>
-          <button className="foot-admin" onClick={onOpenAdmin}>Admin</button>
         </div>
       </div>
     </footer>
