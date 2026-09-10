@@ -21,6 +21,8 @@ export default function AccordionGallery({
   trigger = 'hover',
   showLabels = true,
   grayscale = true,
+  onOpen,
+  openHint = 'View gallery →',
   className = ''
 }) {
   const rootRef = useRef(null);
@@ -116,7 +118,10 @@ export default function AccordionGallery({
   useEffect(() => () => tlRef.current?.kill(), []);
 
   const handleEnter = i => { if (trigger === 'hover') setActive(i); };
-  const handleClick = (i, e) => { if (i !== active) { e.preventDefault(); setActive(i); } };
+  const handleClick = (i, e) => {
+    if (i !== active) { e.preventDefault(); setActive(i); }
+    else if (onOpen) { e.preventDefault(); onOpen(i); }
+  };
   const handleKeyDown = (i, e) => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); setActive((i + 1) % count); }
     else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); setActive((i - 1 + count) % count); }
@@ -166,6 +171,7 @@ export default function AccordionGallery({
                 <span className="ag-panel__textwrap">
                   <span className="ag-panel__text" ref={el => (textRefs.current[i] = el)}>{item.label}</span>
                   {item.sub && <span className="ag-panel__sub" ref={el => (subRefs.current[i] = el)}>{item.sub}</span>}
+                  {onOpen && <span className="ag-panel__cta">{openHint}</span>}
                 </span>
               </span>
             )}

@@ -55,6 +55,16 @@
   color: rgba(255,255,255,0.75); font-family: var(--font-body); font-size: 0.82rem; line-height: 1.4;
   opacity: 0; max-width: 340px; white-space: normal;
 }
+.ag-panel__cta {
+  display: inline-flex; align-items: center; margin-top: 12px; padding: 7px 15px; border-radius: 99px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ag-text);
+  background: color-mix(in srgb, var(--ag-accent) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ag-accent) 55%, transparent);
+  width: max-content; opacity: 0; transform: translateY(6px);
+  transition: opacity .4s ease .1s, transform .4s ease .1s, background .25s ease;
+}
+.ag-panel--active .ag-panel__cta { opacity: 1; transform: translateY(0); }
+.ag-panel--active:hover .ag-panel__cta { background: var(--ag-accent); color: #1a130f; }
 @media (max-width: 640px) {
   .accordion-gallery { flex-direction: column; perspective: none; height: auto !important; }
   .ag-panel { min-height: 100px; transform: none !important; }

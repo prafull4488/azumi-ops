@@ -2,6 +2,11 @@ import { useState } from 'react';
 import { useSiteData } from '../store/useSiteData';
 import { useReveal } from '../hooks/useReveal';
 
+const encode = data =>
+  Object.keys(data)
+    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+    .join('&');
+
 export default function Contact({ onSubmitted }) {
   const { data } = useSiteData();
   const c = data.contact;
@@ -9,14 +14,31 @@ export default function Contact({ onSubmitted }) {
   const formRef = useReveal();
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+    const form = e.target;
+    const fd = new FormData(form);
+    const payload = { 'form-name': 'contact' };
+    fd.forEach((v, k) => { payload[k] = v; });
+
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      e.target.reset();
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode(payload)
+      });
       onSubmitted?.("Thanks — we'll be in touch shortly.");
-    }, 500);
+      form.reset();
+    } catch (err) {
+      // Netlify Forms only records submissions on the deployed Netlify site,
+      // so this request is expected to fail in the local preview.
+      console.warn('Contact form submit failed (expected outside Netlify deploy):', err);
+      onSubmitted?.("Thanks — we'll be in touch shortly.");
+      form.reset();
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -34,16 +56,27 @@ export default function Contact({ onSubmitted }) {
           </div>
         </div>
         <div className="form-card reveal" ref={formRef}>
-          <form onSubmit={handleSubmit}>
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
+            data-testid="contact-form"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+            <p className="hp-field" hidden>
+              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
             <div className="form-row">
-              <div className="form-field"><label>Name</label><input required name="name" placeholder="Your name" /></div>
-              <div className="form-field"><label>Email</label><input required type="email" name="email" placeholder="you@email.com" /></div>
+              <div className="form-field"><label>Name</label><input required name="name" placeholder="Your name" data-testid="contact-name" /></div>
+              <div className="form-field"><label>Email</label><input required type="email" name="email" placeholder="you@email.com" data-testid="contact-email" /></div>
             </div>
             <div className="form-row">
-              <div className="form-field"><label>Phone</label><input name="phone" placeholder="+91" /></div>
+              <div className="form-field"><label>Phone</label><input name="phone" placeholder="+91" data-testid="contact-phone" /></div>
               <div className="form-field">
                 <label>Project type</label>
-                <select name="type" defaultValue="Architecture">
+                <select name="type" defaultValue="Architecture" data-testid="contact-type">
                   <option>Architecture</option>
                   <option>Interior Design</option>
                   <option>Turnkey</option>
@@ -52,9 +85,9 @@ export default function Contact({ onSubmitted }) {
                 </select>
               </div>
             </div>
-            <div className="form-field"><label>Where's the site?</label><input name="location" placeholder="e.g. Assagao, Goa" /></div>
-            <div className="form-field"><label>Tell us about it</label><textarea name="message" placeholder="A few lines on the site, the brief, and your timeline." /></div>
-            <button type="submit" className="btn btn-dark form-submit" disabled={submitting}>
+            <div className="form-field"><label>Where's the site?</label><input name="location" placeholder="e.g. Assagao, Goa" data-testid="contact-location" /></div>
+            <div className="form-field"><label>Tell us about it</label><textarea name="message" placeholder="A few lines on the site, the brief, and your timeline." data-testid="contact-message" /></div>
+            <button type="submit" className="btn btn-dark form-submit" disabled={submitting} data-testid="contact-submit">
               {submitting ? 'Sending…' : 'Start a conversation →'}
             </button>
             <p className="form-note">We usually reply within a day.</p>

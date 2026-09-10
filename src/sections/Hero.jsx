@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useSiteData } from '../store/useSiteData';
 
 export default function Hero() {
   const { data } = useSiteData();
   const h = data.hero;
+  const [videoFailed, setVideoFailed] = useState(false);
 
   const words = h.line2.trim().split(' ');
   const lastWord = words.pop();
@@ -43,7 +45,22 @@ export default function Hero() {
         <div className="hero-figure" data-testid="hero-figure">
           <div className="hero-figure-glow" aria-hidden="true" />
           <div className="hero-figure-frame">
-            <img src={h.image} alt="Azumi Designs architecture" />
+            {h.video && !videoFailed ? (
+              <video
+                className="hero-figure-media"
+                src={h.video}
+                poster={h.image}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                onError={() => setVideoFailed(true)}
+                data-testid="hero-video"
+              />
+            ) : (
+              <img className="hero-figure-media" src={h.image} alt="Azumi Designs architecture" data-testid="hero-image" />
+            )}
             <span className="hero-figure-cap mono">{h.caption}</span>
           </div>
         </div>

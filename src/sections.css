@@ -88,7 +88,8 @@ section.sec { padding: 130px 0; position: relative; }
 @keyframes heroFig { from { opacity: 0; transform: translateY(30px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .hero-figure-glow { position: absolute; inset: -8% -6% -8% -6%; background: radial-gradient(closest-side, rgba(193,95,60,0.4), transparent 72%); filter: blur(20px); z-index: 0; }
 .hero-figure-frame { position: relative; z-index: 1; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 50px 90px -40px rgba(0,0,0,0.75); }
-.hero-figure-frame img { width: 100%; height: min(76vh, 690px); object-fit: cover; display: block; animation: heroPan 22s ease-in-out infinite alternate; }
+.hero-figure-frame .hero-figure-media { width: 100%; height: min(76vh, 690px); object-fit: cover; display: block; animation: heroPan 22s ease-in-out infinite alternate; }
+.hero-figure-frame video.hero-figure-media { animation: none; }
 @keyframes heroPan { from { transform: scale(1.04) translateY(0); } to { transform: scale(1.12) translateY(-2%); } }
 .hero-figure-cap { position: absolute; left: 16px; bottom: 16px; right: 16px; z-index: 2; font-size: 11.5px; letter-spacing: 0.02em; color: #fff; background: rgba(26,19,15,0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.14); padding: 10px 14px; border-radius: 12px; }
 
@@ -100,7 +101,7 @@ section.sec { padding: 130px 0; position: relative; }
 @media (max-width: 960px) {
   .hero-sec { padding: 116px 0 84px; }
   .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-  .hero-figure-frame img { height: 52vh; }
+  .hero-figure-frame .hero-figure-media { height: 52vh; }
   .hero-scroll { display: none; }
 }
 
@@ -110,6 +111,7 @@ section.sec { padding: 130px 0; position: relative; }
 .proj-tab { padding: 9px 20px; border-radius: 99px; border: 1px solid var(--line); font-size: 13px; background: transparent; transition: all .2s ease; }
 .proj-tab.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .proj-tab:hover:not(.active) { border-color: var(--ink); }
+.proj-hint { margin-top: 22px; font-size: 11.5px; letter-spacing: 0.04em; color: var(--ink-soft); opacity: 0.8; }
 
 /* ABOUT */
 .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 72px; align-items: start; }
