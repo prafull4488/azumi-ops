@@ -117,7 +117,7 @@ export const DEFAULT_DATA = {
     { tag: 'Approvals', title: 'Panchayat Approvals: A Plain-English Guide', excerpt: 'What gets submitted, in what order, and how long it typically takes.', date: 'May 2026', read: '8 min read', image: '/images/journal/Turnkey.jpeg' }
   ],
   faq: [
-    { q: 'Where do you take on projects?', a: "Across Goa and Karnataka. We occasionally take select projects elsewhere; write to us with the location and we'll let you know." },
+    { q: 'Where do you take on projects?', a: "Across Goa, Pune and Karnataka. We occasionally take select projects elsewhere; write to us with the location and we'll let you know." },
     { q: "What's a realistic budget range?", a: 'Most homes we design range widely by scope and finish level. Share your site size and rough brief and we\u2019ll give you an honest range early on.' },
     { q: 'How do design fees work?', a: 'Fees are typically a percentage of construction cost, phased across concept, design development and execution — outlined clearly in your proposal.' },
     { q: 'How long does a project take?', a: 'A typical home takes 3–5 months of design and 10–14 months to build, depending on size and site conditions.' },
@@ -129,9 +129,9 @@ export const DEFAULT_DATA = {
     { q: "What's the smallest project you take on?", a: "We generally take on full homes and larger interior projects; for smaller renovations, write in and we'll be upfront about fit." }
   ],
   contact: {
-    address: 'North Goa, India',
-    email: 'hello@azumidesigns.co.in',
-    phone: '+91 98765 43210',
+    address: 'Azumi Designs, Akar Suburbia, Azumi Designs, Villa118, Panzorconi, Cuncolim, Goa 403703',
+    email: 'azumidesigns@gmail.com',
+    phone: '+91 9172420114',
     hours: 'Mon–Sat, 10:00–18:00 IST'
   }
 };
