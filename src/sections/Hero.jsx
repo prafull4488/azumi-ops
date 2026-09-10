@@ -30,7 +30,7 @@ export default function Hero() {
 
           <div className="hero-actions">
             <a href="#projects" className="btn btn-primary" data-testid="hero-view-work-btn">View our work →</a>
-            <a href="#contact" className="btn btn-ghost" data-testid="hero-contact-btn">Start a conversation</a>
+            <a href="#contact" className="btn btn-outline" data-testid="hero-contact-btn">Start a conversation</a>
           </div>
 
           <div className="hero-meta" data-testid="hero-meta">

@@ -45,8 +45,8 @@ export default function Projects() {
           <AccordionGallery
             key={filter}
             items={items}
-            accentColor="#c15f3c"
-            overlayColor="#1a130f"
+            accentColor="#b5687a"
+            overlayColor="#241a20"
             defaultIndex={Math.min(2, items.length - 1)}
             expandRatio={0.48}
             trigger="hover"

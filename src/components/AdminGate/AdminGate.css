@@ -2,9 +2,9 @@
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
   padding: 24px;
   background:
-    radial-gradient(50vw 50vw at 80% 12%, rgba(193,95,60,0.28), transparent 60%),
-    radial-gradient(46vw 46vw at 8% 92%, rgba(224,137,95,0.14), transparent 62%),
-    #1a130f;
+    radial-gradient(50vw 50vw at 80% 12%, rgba(181,104,122,0.30), transparent 60%),
+    radial-gradient(46vw 46vw at 8% 92%, rgba(198,154,91,0.15), transparent 62%),
+    #241a20;
 }
 .gate-card {
   width: 100%; max-width: 380px; text-align: center; color: #fff;

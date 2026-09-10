@@ -7,32 +7,62 @@ export const DEFAULT_DATA = {
     scrollHint: 'Scroll to explore',
     image: '/images/hero/HeroImage.png',
     video: '/images/hero/AzumiDesigns-web.mp4',
-    caption: 'Kadilkar Residence — a brick-jaali façade lit for the evening.'
+    caption: 'A brick-jaali façade, lit for the evening.'
   },
   projects: [
-    { title: 'Kadilkar Residence', type: 'Completed', location: 'Residence', one: 'A three-storey home fronted by a perforated brick jaali that glows after dark.', image: '/images/hero/HeroImage2.jpeg', gallery: [
-      '/images/hero/HeroImage2.jpeg', '/images/hero/HeroImage.png'
-    ] },
     { title: 'Amma Manne', type: 'Completed', location: 'Family Home', one: 'A family house wrapped around fort-view terraces and open sit-outs.', image: '/images/projects/Amma%20Manne/Render.jpeg', gallery: [
-      '/images/projects/Amma%20Manne/Render.jpeg', '/images/projects/Amma%20Manne/Side_view.jpg', '/images/projects/Amma%20Manne/Fortview_terrace.jpeg', '/images/projects/Amma%20Manne/Terrace.jpg', '/images/projects/Amma%20Manne/Terrace1.jpg', '/images/projects/Amma%20Manne/Sidewalk.jpeg', '/images/projects/Amma%20Manne/Living.jpeg'
+      { src: '/images/projects/Amma%20Manne/Render.jpeg', caption: 'Exterior render' },
+      { src: '/images/projects/Amma%20Manne/Side_view.jpg', caption: 'Side elevation' },
+      { src: '/images/projects/Amma%20Manne/Fortview_terrace.jpeg', caption: 'Fort-view terrace' },
+      { src: '/images/projects/Amma%20Manne/Terrace.jpg', caption: 'Open terrace' },
+      { src: '/images/projects/Amma%20Manne/Terrace1.jpg', caption: 'Terrace sit-out' },
+      { src: '/images/projects/Amma%20Manne/Sidewalk.jpeg', caption: 'Entrance approach' },
+      { src: '/images/projects/Amma%20Manne/Living.jpeg', caption: 'Living room' }
     ] },
     { title: 'Avshata', type: 'Completed', location: 'Interior', one: 'A layered interior of living, dining and a mezzanine bar counter.', image: '/images/projects/Avshata/Living1.JPG', gallery: [
-      '/images/projects/Avshata/Living1.JPG', '/images/projects/Avshata/Living2.JPG', '/images/projects/Avshata/Living3.JPG', '/images/projects/Avshata/Bedroom1.JPG', '/images/projects/Avshata/Bedroom2.JPG', '/images/projects/Avshata/Bedroom3.JPG', '/images/projects/Avshata/Kitchen.JPG', '/images/projects/Avshata/BarCounter.JPG', '/images/projects/Avshata/Mezzanine.JPG', '/images/projects/Avshata/Partition.JPG', '/images/projects/Avshata/Mirror.JPG', '/images/projects/Avshata/Wallpaper.jpg', '/images/projects/Avshata/DSCF3412.JPG'
+      { src: '/images/projects/Avshata/Living1.JPG', caption: 'Living room' },
+      { src: '/images/projects/Avshata/Living2.JPG', caption: 'Living & dining' },
+      { src: '/images/projects/Avshata/Living3.JPG', caption: 'Living, in natural light' },
+      { src: '/images/projects/Avshata/Bedroom1.JPG', caption: 'Master bedroom' },
+      { src: '/images/projects/Avshata/Bedroom2.JPG', caption: 'Guest bedroom' },
+      { src: '/images/projects/Avshata/Bedroom3.JPG', caption: "Children's bedroom" },
+      { src: '/images/projects/Avshata/Kitchen.JPG', caption: 'Kitchen' },
+      { src: '/images/projects/Avshata/BarCounter.JPG', caption: 'Mezzanine bar counter' },
+      { src: '/images/projects/Avshata/Mezzanine.JPG', caption: 'Mezzanine' },
+      { src: '/images/projects/Avshata/Partition.JPG', caption: 'Timber partition' },
+      { src: '/images/projects/Avshata/Mirror.JPG', caption: 'Vanity & mirror detail' },
+      { src: '/images/projects/Avshata/Wallpaper.jpg', caption: 'Feature wallpaper' },
+      { src: '/images/projects/Avshata/DSCF3412.JPG', caption: 'Interior detail' }
     ] },
     { title: 'Coastal Chic', type: 'Completed', location: 'Interior', one: 'Breezy, light-filled rooms in a relaxed coastal palette.', image: '/images/projects/Costal%20Chic/Living.jpg', gallery: [
-      '/images/projects/Costal%20Chic/Living.jpg', '/images/projects/Costal%20Chic/Balcony.jpeg', '/images/projects/Costal%20Chic/Bedroom1.png', '/images/projects/Costal%20Chic/Bedroom2.png', '/images/projects/Costal%20Chic/Dining1.png', '/images/projects/Costal%20Chic/Dining2.png'
+      { src: '/images/projects/Costal%20Chic/Living.jpg', caption: 'Living room' },
+      { src: '/images/projects/Costal%20Chic/Balcony.jpeg', caption: 'Balcony' },
+      { src: '/images/projects/Costal%20Chic/Bedroom1.png', caption: 'Master bedroom' },
+      { src: '/images/projects/Costal%20Chic/Bedroom2.png', caption: 'Second bedroom' },
+      { src: '/images/projects/Costal%20Chic/Dining1.png', caption: 'Dining area' },
+      { src: '/images/projects/Costal%20Chic/Dining2.png', caption: 'Dining, coastal palette' }
     ] },
     { title: 'Serene Dreams', type: 'Ongoing', location: 'Interior', one: 'A calm, restful bedroom scheme in soft neutral tones.', image: '/images/projects/Serene%20Dreams/B.png', gallery: [
-      '/images/projects/Serene%20Dreams/B.png', '/images/projects/Serene%20Dreams/C.png', '/images/projects/Serene%20Dreams/D.png', '/images/projects/Serene%20Dreams/E.png'
+      { src: '/images/projects/Serene%20Dreams/B.png', caption: 'Bedroom concept' },
+      { src: '/images/projects/Serene%20Dreams/C.png', caption: 'Bedside detail' },
+      { src: '/images/projects/Serene%20Dreams/D.png', caption: 'Wardrobe elevation' },
+      { src: '/images/projects/Serene%20Dreams/E.png', caption: 'Soft neutral scheme' }
     ] },
     { title: 'Bengaluru Manne', type: 'Ongoing', location: 'City Home', one: 'A compact city home with warm dining and living spaces.', image: '/images/projects/Bengaluru%20Manne/Living.jpeg', gallery: [
-      '/images/projects/Bengaluru%20Manne/Living.jpeg', '/images/projects/Bengaluru%20Manne/Dining.jpeg', '/images/projects/Bengaluru%20Manne/Washroom.jpeg', '/images/projects/Bengaluru%20Manne/Collage.jpeg'
+      { src: '/images/projects/Bengaluru%20Manne/Living.jpeg', caption: 'Living room' },
+      { src: '/images/projects/Bengaluru%20Manne/Dining.jpeg', caption: 'Dining area' },
+      { src: '/images/projects/Bengaluru%20Manne/Washroom.jpeg', caption: 'Washroom' },
+      { src: '/images/projects/Bengaluru%20Manne/Collage.jpeg', caption: 'Design collage' }
     ] },
     { title: 'Modern Comfort', type: 'Ongoing', location: 'Interior', one: 'Clean-lined bedrooms and kitchen tuned for everyday comfort.', image: '/images/projects/Modern%20Comfort/M%20bedroom.png', gallery: [
-      '/images/projects/Modern%20Comfort/M%20bedroom.png', '/images/projects/Modern%20Comfort/M%20bedroom%201.png', '/images/projects/Modern%20Comfort/Kitchen%201.png'
+      { src: '/images/projects/Modern%20Comfort/M%20bedroom.png', caption: 'Master bedroom' },
+      { src: '/images/projects/Modern%20Comfort/M%20bedroom%201.png', caption: 'Master bedroom, alternate view' },
+      { src: '/images/projects/Modern%20Comfort/Kitchen%201.png', caption: 'Kitchen' }
     ] },
     { title: 'Miraki', type: 'Ongoing', location: 'Interior', one: 'Considered flooring and material detailing for a serene bedroom.', image: '/images/projects/Miraki/Master_bedroom_flooring.jpeg', gallery: [
-      '/images/projects/Miraki/Master_bedroom_flooring.jpeg', '/images/projects/Miraki/Flooring%20%281%29.jpeg', '/images/projects/Miraki/Flooring%20%282%29.jpeg'
+      { src: '/images/projects/Miraki/Master_bedroom_flooring.jpeg', caption: 'Master bedroom flooring' },
+      { src: '/images/projects/Miraki/Flooring%20%281%29.jpeg', caption: 'Flooring detail' },
+      { src: '/images/projects/Miraki/Flooring%20%282%29.jpeg', caption: 'Flooring detail II' }
     ] }
   ],
   about: {
@@ -62,7 +92,7 @@ export const DEFAULT_DATA = {
   founder: {
     name: 'Sindhu Kodihal',
     role: 'Founder & Principal Architect',
-    photo: '/images/Sindhu/Profile.jpeg',
+    photo: '/images/Sindhu/Profile_Picture.jpg',
     statement: 'I started Azumi because I kept meeting people who wanted a home that felt like theirs, not a home that happened to be built. Our work is slow on purpose — small enough that I know the site, the mason and the client by name.',
     practice: '38 projects across homes, villas and interiors',
     focus: 'Residential architecture, material detailing, Vastu-informed planning',

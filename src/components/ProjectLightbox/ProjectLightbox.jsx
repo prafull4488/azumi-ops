@@ -3,7 +3,8 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import './ProjectLightbox.css';
 
 export default function ProjectLightbox({ project, onClose }) {
-  const images = project?.gallery?.length ? project.gallery : (project?.image ? [project.image] : []);
+  const images = (project?.gallery?.length ? project.gallery : (project?.image ? [project.image] : []))
+    .map(g => (typeof g === 'string' ? { src: g } : g));
   const [index, setIndex] = useState(0);
 
   const go = useCallback(dir => {
@@ -51,7 +52,10 @@ export default function ProjectLightbox({ project, onClose }) {
             </button>
           )}
           <div className="lb-figure">
-            <img key={index} src={images[index]} alt={`${project.title} ${index + 1}`} data-testid="lightbox-image" />
+            <img key={index} src={images[index].src} alt={images[index].caption || `${project.title} ${index + 1}`} data-testid="lightbox-image" />
+            {images[index].caption && (
+              <span className="lb-caption" data-testid="lightbox-caption">{images[index].caption}</span>
+            )}
             <span className="lb-counter mono">{index + 1} / {images.length}</span>
           </div>
           {images.length > 1 && (
@@ -65,12 +69,12 @@ export default function ProjectLightbox({ project, onClose }) {
           <div className="lb-thumbs" data-testid="lightbox-thumbs">
             {images.map((src, i) => (
               <button
-                key={src}
+                key={`${src.src}-${i}`}
                 className={`lb-thumb ${i === index ? 'active' : ''}`}
                 onClick={() => setIndex(i)}
                 aria-label={`View image ${i + 1}`}
               >
-                <img src={src} alt="" />
+                <img src={src.src} alt="" />
               </button>
             ))}
           </div>
